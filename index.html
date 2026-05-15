@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rolex Gold Coin Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #b8952e;
+  --gold-light: #f1d58a;
+  --gold-pale: #fff8e8;
+  --gold-dark: #6f5312;
+  --black: #11100d;
+  --charcoal: #171512;
+  --surface: #fffefb;
+  --surface2: #f8f5ee;
+  --border: #ded2b2;
+  --text: #1f1c16;
+  --text-muted: #6f685c;
+  --watch-color: #256b4b;
+  --watch-bg: #eef8f2;
+  --jewel-color: #9f2b57;
+  --jewel-bg: #fff1f7;
+  --labor-color: #755512;
+  --labor-bg: #fff7df;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(32,24,10,0.08);
+  --shadow-lg: 0 18px 52px rgba(32,24,10,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(180deg,#f8f1e4 0%,#eee4d1 100%);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.6;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  letter-spacing:0;
+}
+
+/* ─── HEADER ─── */
+.header{
+  background:linear-gradient(92deg,#0f0e0c 0%,#191611 58%,#2d2515 100%);
+  padding:0 22px;
+  height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex:0 0 auto;
+  gap:12px;
+  z-index:100;
+  border-bottom:1px solid rgba(241,213,138,.2);
+  box-shadow:0 10px 34px rgba(17,16,13,.16);
+}
+.header-brand{display:flex;align-items:center;gap:10px;}
+.header-logo{
+  width:32px;height:32px;border-radius:50%;
+  background:radial-gradient(circle at 30% 22%,#fff4c5 0%,#d0ad4a 46%,#8a6817 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;
+  font-weight:700;font-size:15px;color:var(--black);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 0 0 1px rgba(255,255,255,.16);
+}
+.header-title{color:#fff;font-family:'Inter',sans-serif;font-size:18px;font-weight:700;letter-spacing:0;}
+.header-sub{color:rgba(255,255,255,0.4);font-size:10px;margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.language-switch{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:rgba(255,255,255,0.72);
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.language-switch-label{color:rgba(255,255,255,0.54);}
+.language-options{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  padding:3px;
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+}
+.language-option{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  min-width:56px;
+  justify-content:center;
+  border:0;
+  border-radius:999px;
+  padding:4px 8px;
+  background:transparent;
+  color:rgba(255,255,255,0.64);
+  font-family:inherit;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+  transition:all .18s;
+}
+.language-option:hover{color:#fff;background:rgba(255,255,255,0.10);}
+.language-option.active{
+  background:var(--gold);
+  color:var(--black);
+  box-shadow:0 1px 8px rgba(201,168,76,0.35);
+}
+.language-flag{font-size:16px;line-height:1;}
+.gold-price-pill{
+  background:rgba(241,213,138,0.13);
+  border:1px solid rgba(241,213,138,0.34);
+  border-radius:999px;padding:5px 14px;
+  color:var(--gold-light);font-size:12px;font-weight:600;
+}
+.gold-price-pill .pv{color:#fff;font-weight:700;margin:0 4px;}
+
+/* ─── ADMIN BAR ─── */
+.admin-bar{
+  background:rgba(255,254,251,.88);border-bottom:1px solid rgba(222,210,178,.75);
+  padding:0 22px;height:36px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex:0 0 auto;gap:10px;flex-wrap:wrap;
+  backdrop-filter:blur(10px);
+}
+.admin-pill{
+  border-radius:999px;padding:4px 12px;
+  font-size:11px;font-weight:600;
+  display:flex;align-items:center;gap:5px;
+}
+.admin-pill.sales{background:#f3edd9;color:#7a6030;border:1px solid #e3cc85;}
+.admin-pill.admin{background:#e8f4ec;color:#2e6e45;border:1px solid #9ecfae;}
+.admin-pill .dot{width:6px;height:6px;border-radius:50%;flex:0 0 auto;}
+.admin-pill.sales .dot{background:#c9a84c;}
+.admin-pill.admin .dot{background:#2e6e45;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.btn-xs{
+  border:1.5px solid var(--border);background:#fff;
+  border-radius:999px;padding:5px 12px;
+  font-size:11px;font-weight:600;cursor:pointer;
+  font-family:inherit;color:var(--text);transition:all .18s;
+}
+.btn-xs:hover{background:var(--gold-pale);border-color:var(--gold);}
+.btn-xs.danger{border-color:#e57373;color:#c62828;background:#fff5f5;}
+.btn-xs.danger:hover{background:#fce8e8;}
+.hidden{display:none!important;}
+
+/* ─── ADMIN LOGIN PANEL ─── */
+.admin-panel{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:none;flex:0 0 auto;}
+.admin-panel.open{display:block;}
+.admin-panel-inner{max-width:400px;display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;}
+.field-mini label{font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:5px;display:block;}
+.field-mini input{border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;font-size:13px;outline:none;font-family:inherit;width:190px;background:var(--surface2);transition:border-color .2s;}
+.field-mini input:focus{border-color:var(--gold);}
+.btn-sm{border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;border:1.5px solid;cursor:pointer;font-family:inherit;transition:all .18s;}
+.btn-primary{background:var(--black);color:#fff;border-color:var(--black);}
+.btn-primary:hover{background:#333;}
+.btn-outline{background:#fff;color:var(--text);border-color:var(--border);}
+.btn-outline:hover{background:var(--gold-pale);border-color:var(--gold);}
+
+/* ─── APP BODY ─── */
+.app-body{
+  display:flex;
+  flex:1;
+  overflow:hidden;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar{
+  width:292px;flex:0 0 292px;
+  background:linear-gradient(180deg,#11100d 0%,#171512 62%,#221c11 100%);
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+  padding:20px 18px;
+  gap:0;
+  border-right:1px solid rgba(241,213,138,.12);
+  box-shadow:14px 0 38px rgba(17,16,13,.08);
+}
+.sidebar-section-label{
+  font-size:9.5px;font-weight:700;
+  color:rgba(255,255,255,.35);
+  text-transform:uppercase;letter-spacing:1.4px;
+  padding:0 4px 8px;
+  margin-top:20px;
+}
+.sidebar-section-label:first-child{margin-top:0;}
+
+/* Gold price in sidebar */
+.sidebar-price-card{
+  background:rgba(201,168,76,0.12);
+  border:1px solid rgba(201,168,76,0.25);
+  border-radius:14px;padding:14px 16px;
+  margin-bottom:8px;
+}
+.sidebar-price-card .spc-label{font-size:10px;font-weight:600;color:rgba(201,168,76,.7);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;}
+.sidebar-price-card .spc-val{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--gold);line-height:1.1;}
+.sidebar-price-card .spc-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;}
+.sidebar-price-card .spc-updated{font-size:10px;color:rgba(201,168,76,.6);margin-top:6px;}
+
+/* Sidebar nav buttons */
+.sidebar-nav{display:flex;flex-direction:column;gap:3px;margin-bottom:6px;}
+.sb-nav-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;border-radius:12px;
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:13.5px;font-weight:500;
+  color:rgba(255,255,255,.6);
+  text-align:left;transition:all .18s;
+  width:100%;
+}
+.sb-nav-btn:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);}
+.sb-nav-btn.active{background:rgba(201,168,76,.16);color:var(--gold-light);font-weight:600;}
+.sb-nav-btn .sb-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto;background:rgba(255,255,255,.07);}
+.sb-nav-btn.active .sb-icon{background:rgba(201,168,76,.22);}
+.sb-nav-btn .sb-label{flex:1;line-height:1.3;}
+.sb-nav-btn .sb-badge{font-size:9px;font-weight:700;background:var(--gold);color:var(--black);border-radius:999px;padding:2px 7px;}
+
+/* Product type rules in sidebar */
+.sidebar-rule{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:10px;
+  background:rgba(255,255,255,.05);
+  margin-bottom:5px;
+  border-left:3px solid transparent;
+}
+.sidebar-rule.jewel{border-color:#b02a60;}
+.sidebar-rule.watch{border-color:#2e6e45;}
+.sidebar-rule.labor{border-color:var(--gold);}
+.sidebar-rule .sr-icon{font-size:15px;flex:0 0 auto;}
+.sidebar-rule .sr-text .sr-name{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.4px;}
+.sidebar-rule .sr-text .sr-desc{font-size:12px;color:rgba(255,255,255,.8);margin-top:2px;}
+.sidebar-link{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;color:rgba(201,168,76,.7);
+  text-decoration:none;margin-top:8px;padding:6px 10px;
+  border-radius:999px;border:1px solid rgba(201,168,76,.25);
+  background:rgba(201,168,76,.07);transition:all .18s;
+}
+.sidebar-link:hover{color:var(--gold-light);border-color:rgba(201,168,76,.5);}
+
+/* ── Sidebar rule cards (3-col grid) ── */
+.sb-rules-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:6px;margin-bottom:4px;
+}
+.sb-rule-card{
+  border-radius:10px;padding:10px 8px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;gap:4px;
+}
+.sb-rule-card.jewel{border-color:rgba(176,42,96,.35);background:rgba(176,42,96,.08);}
+.sb-rule-card.watch{border-color:rgba(46,110,69,.35);background:rgba(46,110,69,.08);}
+.sb-rule-card.labor{border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.06);}
+.sb-rule-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+.sb-rule-icon{font-size:14px;}
+.sb-rule-badge{font-size:9px;font-weight:700;border-radius:4px;padding:2px 5px;line-height:1;}
+.sb-rule-badge.jewel{background:rgba(176,42,96,.3);color:#e899bb;}
+.sb-rule-badge.watch{background:rgba(46,110,69,.3);color:#7ecfa0;}
+.sb-rule-badge.labor{background:rgba(201,168,76,.25);color:var(--gold);}
+.sb-rule-name{font-size:11px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.2;}
+.sb-rule-detail{font-size:9.5px;color:rgba(255,255,255,.45);line-height:1.3;}
+
+/* ── Sidebar steps ── */
+.sb-steps{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);
+  align-items:stretch;
+  gap:0;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:8px;
+}
+.sb-step{
+  min-width:0;
+  padding:10px 9px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+}
+.sb-step:first-child{border-bottom:0;}
+.sb-step-num{
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(176,42,96,.3);border:1px solid rgba(176,42,96,.5);
+  color:#f3a8c7;font-size:13px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+}
+.sb-step-text{
+  display:block;
+  min-width:0;
+  font-size:10.5px;
+  color:rgba(255,255,255,.68);
+  line-height:1.36;
+}
+.sb-step-text strong{display:block;color:rgba(255,255,255,.92);font-size:11.5px;margin-bottom:2px;line-height:1.25;}
+.sb-step-text span{display:block;}
+.sb-step-arrow{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100%;
+  color:rgba(241,213,138,.48);font-size:12px;padding:0;
+  flex:0 0 auto;
+  transform:none;
+}
+.sync-dot{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 12px;border-radius:10px;
+  background:rgba(46,110,69,.15);
+  font-size:11.5px;color:rgba(255,255,255,.6);
+}
+.sync-dot .s-dot{width:7px;height:7px;border-radius:50%;background:#2e6e45;animation:pulse 2s infinite;flex:0 0 auto;}
+.sync-dot.error{background:rgba(180,60,30,.15);}
+.sync-dot.error .s-dot{background:#e07050;animation:none;}
+
+/* ─── MAIN CONTENT ─── */
+.main-content{
+  flex:1;overflow-y:auto;
+  padding:24px 28px 28px;
+  display:flex;flex-direction:column;
+  min-width:0;
+}
+
+/* ─── SCREENS ─── */
+.screen{display:none;flex:1;flex-direction:column;animation:fadeUp .25s ease;}
+.screen.active{display:flex;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* ─── HOME SCREEN ─── */
+.home-greeting{margin-bottom:18px;}
+.home-greeting h1{
+  font-family:'Inter',sans-serif;
+  font-size:30px;font-weight:800;color:var(--black);
+  line-height:1.2;margin-bottom:4px;
+}
+.home-greeting p{font-size:13px;color:var(--text-muted);}
+
+.mode-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  max-width:1120px;
+}
+.mode-card{
+  background:linear-gradient(180deg,#fffefb 0%,#fbf7ef 100%);
+  border:1px solid rgba(222,210,178,.95);
+  border-radius:14px;
+  padding:22px 20px;
+  cursor:pointer;
+  transition:all .22s cubic-bezier(.25,.8,.25,1);
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;gap:12px;
+  box-shadow:var(--shadow);
+}
+.mode-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 60%,rgba(201,168,76,.06));
+  opacity:0;transition:opacity .22s;
+}
+.mode-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-lg);
+  border-color:var(--gold);
+}
+.mode-card:hover::before{opacity:1;}
+.mode-card:active{transform:translateY(-2px);}
+
+.mc-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+}
+.mc-icon.calc{background:linear-gradient(135deg,#111010,#2a2a2a);}
+.mc-icon.convert{background:linear-gradient(135deg,#1a3d28,#2e6e45);}
+.mc-icon.history{background:linear-gradient(135deg,#5a3a06,#8a6a12);}
+
+.mc-title{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--black);}
+.mc-desc{font-size:12px;color:var(--text-muted);line-height:1.55;}
+.mc-arrow{
+  margin-top:auto;
+  display:flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:700;color:var(--gold-dark);
+}
+.mc-arrow svg{transition:transform .2s;}
+.mode-card:hover .mc-arrow svg{transform:translateX(4px);}
+
+/* Gold price card on home */
+.home-gold-strip{
+  display:flex;align-items:center;gap:0;
+  background:linear-gradient(100deg,#11100d 0%,#201b11 62%,#5c4516 100%);border-radius:14px;
+  padding:16px 22px;margin-bottom:20px;
+  max-width:1120px;
+  box-shadow:0 16px 42px rgba(17,16,13,.14);
+  border:1px solid rgba(241,213,138,.14);
+}
+.hgs-item{display:flex;flex-direction:column;gap:3px;flex:1;}
+.hgs-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.7px;}
+.hgs-val{
+  font-size:17px;font-weight:700;color:#fff;
+  font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:'tnum' 1,'lnum' 1;
+  letter-spacing:0.02em;
+  font-family:'Inter',sans-serif;
+}
+.hgs-val.gold{color:var(--gold);font-size:17px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:'tnum' 1,'lnum' 1;letter-spacing:0.03em;}
+.hgs-val.date{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.7);}
+.hgs-divider{width:1px;height:36px;background:rgba(255,255,255,.1);flex:0 0 auto;margin:0 20px;}
+
+/* ─── CALC SCREEN ─── */
+/* wizard */
+.wizard-bar{
+  background:rgba(255,254,251,.94);border:1px solid var(--border);
+  border-radius:14px;padding:16px 20px;
+  margin-bottom:16px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:8px;
+  overflow-x:auto;
+}
+.wz-step{display:flex;align-items:center;gap:8px;flex:0 0 auto;cursor:pointer;}
+.wz-circle{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:12px;transition:all .25s;border:2px solid;
+}
+.wz-circle.idle{background:#fff;border-color:#d3c9af;color:#b0a882;}
+.wz-circle.active{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 0 0 4px rgba(201,168,76,.18);}
+.wz-circle.done{background:#2e6e45;border-color:#2e6e45;color:#fff;}
+.wz-label{font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap;}
+.wz-label.active{color:var(--gold-dark);}
+.wz-label.done{color:#2e6e45;}
+.wz-line{width:32px;height:2px;background:var(--border);flex:0 0 auto;transition:background .3s;}
+.wz-line.done{background:#2e6e45;}
+.wz-progress{height:3px;background:var(--border);border-radius:999px;margin-top:12px;overflow:hidden;}
+.wz-progress-fill{height:100%;background:var(--gold);border-radius:999px;transition:width .4s ease;}
+
+/* step panels */
+.step-panel{display:none;animation:fadeUp .2s ease;}
+.step-panel.active{display:block;}
+
+/* cards */
+.card{
+  background:rgba(255,254,251,.96);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;
+  box-shadow:var(--shadow);margin-bottom:14px;
+  min-width:0;
+}
+.card-title{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--black);margin-bottom:4px;}
+.card-sub{font-size:12px;color:var(--text-muted);margin-bottom:18px;}
+
+/* fields */
+.field-group{display:grid;gap:12px;}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;}
+.field input{
+  width:100%;border:1.5px solid var(--border);border-radius:10px;
+  padding:12px 14px;font-size:14px;font-weight:500;
+  background:var(--surface2);outline:none;font-family:inherit;
+  color:var(--text);transition:all .2s;
+}
+.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.12);background:#fff;}
+.field input:disabled{background:#f0ece0;color:#999;cursor:not-allowed;}
+
+/* colored spending fields */
+.spend-field{border-radius:16px;padding:14px 16px;margin-bottom:0;}
+.spend-field.watch{background:var(--watch-bg);border:1.5px solid #b8d8c3;}
+.spend-field.jewel{background:var(--jewel-bg);border:1.5px solid #e8a0c0;}
+.spend-field.labor{background:var(--labor-bg);border:1.5px solid #e2c77a;}
+.spend-field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px;}
+.spend-field.watch label{color:var(--watch-color);}
+.spend-field.jewel label{color:var(--jewel-color);}
+.spend-field.labor label{color:var(--labor-color);}
+.spend-field input{background:#fff;border:1.5px solid rgba(0,0,0,.08);}
+.spend-field.watch input:focus{border-color:var(--watch-color);box-shadow:0 0 0 3px rgba(46,110,69,.1);}
+.spend-field.jewel input:focus{border-color:var(--jewel-color);box-shadow:0 0 0 3px rgba(176,42,96,.1);}
+.spend-field.labor input:focus{border-color:var(--labor-color);box-shadow:0 0 0 3px rgba(138,106,18,.1);}
+
+.info-row{
+  background:var(--gold-pale);border:1px solid #e8d89c;
+  border-radius:10px;padding:11px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;
+}
+.info-row .lbl{font-size:12px;font-weight:600;color:var(--gold-dark);}
+.info-row .val{font-size:14px;font-weight:700;color:var(--black);font-variant-numeric:tabular-nums lining-nums;font-feature-settings:'tnum' 1,'lnum' 1;}
+
+/* step nav */
+.step-nav{display:flex;gap:10px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap;}
+.btn-next{
+  background:var(--black);color:#fff;
+  border:2px solid var(--black);border-radius:10px;
+  padding:12px 26px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-next:hover{background:#2a2a2a;}
+.btn-back{
+  background:#fff;color:var(--text);
+  border:1.5px solid var(--border);border-radius:10px;
+  padding:12px 20px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .2s;
+}
+.btn-back:hover{background:var(--gold-pale);border-color:var(--gold);}
+.btn-reset{
+  background:#fff;border:1.5px solid #e8d0a0;color:var(--gold-dark);
+  border-radius:10px;padding:12px 18px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .2s;
+}
+.btn-reset:hover{background:var(--gold-pale);}
+
+/* results */
+.result-hero{
+  background:linear-gradient(135deg,#11100d 0%,#272014 58%,#6a5018 100%);border-radius:var(--radius);
+  padding:24px;text-align:center;margin-bottom:14px;
+  box-shadow:0 18px 46px rgba(17,16,13,.16);
+}
+.result-hero .rh-label{color:var(--gold-light);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.result-hero .rh-coins{
+  font-family:'Inter',sans-serif;font-size:48px;font-weight:800;
+  color:var(--gold);line-height:1;
+  font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:"tnum" 1,"lnum" 1;
+  letter-spacing:0.04em;
+}
+.result-hero .rh-unit{font-size:16px;color:var(--gold-light);margin-top:4px;}
+.result-hero .rh-value{margin-top:8px;font-size:13px;color:#ccc;}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.result-item{border:1px solid var(--border);border-radius:14px;padding:12px 14px;background:var(--surface2);}
+.result-item .ri-label{font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.result-item .ri-val{font-size:14px;font-weight:700;color:var(--black);font-variant-numeric:tabular-nums lining-nums;font-feature-settings:'tnum' 1,'lnum' 1;}
+.result-item.watch{border-color:#b8d8c3;background:var(--watch-bg);}
+.result-item.watch .ri-label{color:var(--watch-color);}
+.result-item.jewel{border-color:#e8a0c0;background:var(--jewel-bg);}
+.result-item.jewel .ri-label{color:var(--jewel-color);}
+.result-item.labor{border-color:#e2c77a;background:var(--labor-bg);}
+.result-item.labor .ri-label{color:var(--labor-color);}
+.result-item.total{border-color:var(--gold);background:var(--gold-pale);}
+.result-item.total .ri-label{color:var(--gold-dark);}
+.formula-strip{
+  background:#f5f0e8;border:1px solid #e8d89c;
+  border-radius:12px;padding:12px 14px;
+  font-size:11px;color:var(--text-muted);line-height:1.8;margin-bottom:14px;
+}
+
+/* ─── CONVERT SCREEN ─── */
+.convert-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.tab-btn{
+  border:1.5px solid var(--border);border-radius:999px;
+  padding:7px 14px;font-size:12px;font-weight:600;
+  background:#fff;cursor:pointer;font-family:inherit;color:var(--text-muted);
+  transition:all .18s;
+}
+.tab-btn.active{background:var(--black);color:#fff;border-color:var(--black);}
+.tab-btn:hover:not(.active){border-color:var(--gold);color:var(--gold-dark);}
+.convert-result{
+  background:linear-gradient(135deg,var(--gold-pale),#fff7e0);
+  border:1px solid #e8d89c;border-radius:16px;
+  padding:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;
+  text-align:center;margin-top:14px;
+}
+.cr-item .cr-label{font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.cr-item .cr-val{font-size:16px;font-weight:700;color:var(--black);}
+.convert-member-context{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border:1px solid rgba(184,149,46,.34);
+  border-radius:12px;
+  padding:14px 16px;
+  margin:0 0 16px;
+  background:linear-gradient(135deg,#fffdf6,#fff3cd);
+}
+.cmc-label{font-size:10px;font-weight:800;color:var(--gold-dark);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px;}
+.cmc-name{font-size:15px;font-weight:800;color:var(--black);line-height:1.35;}
+.cmc-summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+.cmc-coins{font-size:14px;font-weight:800;color:var(--gold-dark);font-variant-numeric:tabular-nums lining-nums;}
+.cmc-link{
+  border:1px solid rgba(184,149,46,.42);
+  background:#fff;
+  color:var(--gold-dark);
+  border-radius:999px;
+  padding:7px 12px;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+  transition:all .18s;
+}
+.cmc-link:hover{background:var(--black);border-color:var(--black);color:#fff;}
+
+/* ─── HISTORY SCREEN ─── */
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--gold-pale);color:var(--gold-dark);font-weight:700;padding:11px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);}
+td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--gold-pale);}
+.history-actions{display:flex;gap:6px;justify-content:flex-end;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);}
+
+/* admin gold section */
+.admin-gold-section{border:1.5px dashed #e0c97a;border-radius:14px;padding:14px;background:#fffcf0;margin-top:12px;}
+.admin-only{display:none;}
+.admin-active-block{display:none;}
+
+/* inline lock */
+.inline-lock{display:flex;gap:8px;align-items:center;}
+.inline-lock input{flex:1;}
+.lock-btn{border:1.5px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;color:var(--text-muted);transition:all .18s;}
+.lock-btn:hover{border-color:var(--gold);background:var(--gold-pale);}
+
+/* screen header */
+.screen-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+}
+.screen-back-btn{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:13px;font-weight:600;
+  color:var(--text-muted);padding:6px 10px;border-radius:10px;
+  transition:all .18s;
+}
+.screen-back-btn:hover{background:rgba(0,0,0,.05);color:var(--text);}
+.screen-title{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;color:var(--black);}
+
+/* type chips */
+.type-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+.type-chip{border-radius:999px;padding:4px 11px;font-size:11px;font-weight:700;border:1px solid;}
+.type-chip.watch{background:var(--watch-bg);color:var(--watch-color);border-color:#9fcfb4;}
+.type-chip.jewel{background:var(--jewel-bg);color:var(--jewel-color);border-color:#e8a0c0;}
+.type-chip.labor{background:var(--labor-bg);color:var(--labor-color);border-color:#e0c77a;}
+
+/* loading */
+.loading-bar{
+  background:#fff9ec;border:1px solid #f0e3ba;
+  border-radius:12px;padding:10px 16px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;font-size:12px;color:var(--text-muted);
+}
+.spinner{width:14px;height:14px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex:0 0 auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.history-edit-date,.history-edit-time,.history-edit-price{border:1.5px solid var(--gold);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:12px;background:#fffef5;outline:none;}
+.history-edit-price{min-width:120px;}
+.history-edit-date{min-width:120px;}
+.history-edit-time{min-width:90px;}
+input[type="date"]{font-family:inherit;}
+.note{font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.6;}
+.test-status{display:none;}
+
+/* ─── MEMBER LOOKUP ─── */
+.member-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.member-source-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid #d9c477;background:var(--gold-pale);
+  color:var(--gold-dark);border-radius:999px;
+  padding:6px 12px;font-size:11px;font-weight:700;
+}
+.member-source-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
+.member-source-pill.live{border-color:#9ecfae;background:#edf8f1;color:#2e6e45;}
+.member-source-pill.live .dot{background:#2e6e45;}
+.member-source-pill.error{border-color:#efb0a8;background:#fff1ef;color:#b53a2c;}
+.member-source-pill.error .dot{background:#d44836;}
+.member-search-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.member-search-input{
+  flex:1;min-width:240px;padding:12px 14px;
+  border:1.5px solid var(--border);border-radius:12px;
+  font-size:14px;font-family:inherit;background:var(--surface);color:var(--text);outline:none;
+}
+.member-search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.12);}
+.member-layout{display:block;min-width:0;}
+.member-layout > .card{min-width:0;}
+.member-directory-card{max-width:1180px;}
+.member-profile-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  background:rgba(17,16,13,.46);
+  backdrop-filter:blur(8px);
+}
+.member-profile-overlay.open{display:flex;}
+.member-profile-card{
+  position:relative;
+  width:min(760px,100%);
+  max-height:88vh;
+  overflow:auto;
+  border-left:4px solid var(--gold);
+  background:linear-gradient(180deg,#fffefb 0%,#fbf7ef 100%);
+  margin:0;
+}
+.member-profile-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:#fffaf0;
+  color:var(--gold-dark);
+  font-family:inherit;
+  font-size:20px;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  transition:all .18s;
+}
+.member-profile-close:hover{
+  background:var(--black);
+  border-color:var(--black);
+  color:#fff;
+}
+.member-profile-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px;padding-right:44px;}
+.member-avatar{
+  width:46px;height:46px;border-radius:50%;background:rgba(184,149,46,.12);
+  display:flex;align-items:center;justify-content:center;font-size:21px;flex:0 0 auto;
+}
+.member-name{font-family:'Inter',sans-serif;font-size:25px;font-weight:700;color:var(--black);line-height:1.08;}
+.member-sub{font-size:12px;color:var(--text-muted);margin-top:4px;}
+.member-tier{
+  border-radius:999px;padding:7px 12px;background:var(--gold-pale);
+  color:var(--gold-dark);font-size:11px;font-weight:800;text-transform:uppercase;white-space:nowrap;
+}
+.member-coin-box{
+  background:linear-gradient(135deg,#11100d,#312817 56%,#6e5518);
+  color:#fff;border-radius:16px;margin-bottom:14px;
+  box-shadow:0 16px 36px rgba(17,16,13,.14);
+  display:flex;overflow:hidden;
+}
+.member-coin-panel{flex:1;padding:16px 18px;}
+.member-coin-panel+.member-coin-panel{
+  border-left:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.18);
+}
+.member-coin-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:6px;}
+.member-coin-amount{font-size:32px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;}
+.member-coin-amount.value{font-size:32px;font-weight:800;color:#f5d87a;}
+.member-coin-foot{font-size:11px;color:rgba(255,255,255,.55);margin-top:6px;}
+.member-coin-discount{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;}
+.member-coin-discount span{color:#8de8a8;font-weight:700;}
+.member-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.member-info-item{background:rgba(248,245,238,.8);border:1px solid var(--border);border-radius:12px;padding:11px 12px;}
+.member-info-wide{grid-column:1/-1;}
+.member-info-label{font-size:10px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:flex;align-items:center;gap:5px;}
+.tier-info-btn{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:transparent;color:var(--text-muted);font-size:10px;font-weight:400;font-style:normal;cursor:pointer;border:1px solid var(--text-muted);padding:0;line-height:1;flex-shrink:0;opacity:.55;transition:opacity .15s;}
+.tier-info-btn:hover{opacity:1;color:var(--gold);border-color:var(--gold);}
+.tier-tooltip-overlay{display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;}
+.tier-tooltip-overlay.open{display:flex;}
+.tier-tooltip-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.35);}
+.tier-tooltip-box{position:relative;background:#fffdf7;border-radius:16px;padding:22px 24px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.22);border:1px solid var(--border);}
+.tier-tooltip-close{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:#f0ece2;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);}
+.tier-tooltip-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:14px;}
+.tier-tooltip-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.tier-tooltip-row:last-child{border-bottom:none;padding-bottom:0;}
+.tier-badge-pill{font-size:10px;font-weight:800;letter-spacing:.8px;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.tier-badge-pill.silver{background:#e8e4da;color:#5a5040;}
+.tier-badge-pill.gold{background:#f5e7b2;color:#7a5c00;}
+.tier-badge-pill.platinum{background:#dde8e8;color:#2a4a4a;}
+.tier-tooltip-desc{font-size:11.5px;color:var(--text-muted);line-height:1.4;}
+.tier-tooltip-note{font-size:10px;color:var(--text-muted);margin-top:14px;padding-top:10px;border-top:1px solid var(--border);opacity:.7;}
+.member-info-value{font-size:13px;font-weight:700;color:var(--text);word-break:normal;overflow-wrap:anywhere;}
+.member-email-value{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.member-results-list{display:grid;gap:8px;margin-top:12px;}
+.member-result-card{
+  position:relative;
+  width:100%;
+  border:1px solid var(--border);border-radius:12px;background:#fffdf7;
+  padding:13px 16px;display:grid;grid-template-columns:minmax(210px,1.35fr) minmax(120px,.7fr) minmax(220px,1fr) minmax(98px,.52fr) minmax(128px,.58fr);align-items:center;gap:14px;
+  text-align:left;
+  font-family:inherit;
+  cursor:pointer;transition:all .18s;
+}
+.member-result-card:hover{border-color:rgba(184,149,46,.7);background:#fffaf0;box-shadow:0 8px 20px rgba(32,24,10,.07);}
+.member-result-card.active{border-color:var(--gold);background:#fff9e8;box-shadow:0 10px 24px rgba(32,24,10,.09);}
+.member-result-card.active::before{
+  content:'';
+  position:absolute;
+  left:-1px;top:14px;bottom:14px;
+  width:4px;border-radius:0 999px 999px 0;
+  background:var(--gold);
+}
+.member-result-card:focus-visible{outline:3px solid rgba(184,149,46,.22);outline-offset:2px;}
+.member-result-card > span{min-width:0;}
+.member-result-card > span:first-child{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.member-result-name{display:block;font-size:14px;font-weight:800;color:var(--black);}
+.member-result-meta{display:block;font-size:12px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.member-result-mobile,.member-result-email,.member-result-dob{font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.member-result-email{color:var(--text-muted);}
+.member-result-coins{
+  font-size:13px;font-weight:800;color:var(--gold-dark);white-space:nowrap;
+  border:1px solid rgba(184,149,46,.34);
+  border-radius:999px;
+  padding:8px 12px;
+  background:#fffaf0;
+  font-variant-numeric:tabular-nums lining-nums;
+  justify-self:end;
+}
+.member-result-header{
+  display:grid;
+  grid-template-columns:minmax(210px,1.35fr) minmax(120px,.7fr) minmax(220px,1fr) minmax(98px,.52fr) minmax(128px,.58fr);
+  gap:14px;
+  padding:0 16px 8px;
+  font-size:10px;
+  font-weight:800;
+  color:var(--gold-dark);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.member-result-header span:last-child{text-align:right;}
+.member-table-coins{font-weight:800;color:var(--gold-dark);font-variant-numeric:tabular-nums lining-nums;}
+.member-sheet-settings{border:1.5px dashed #d8bd63;border-radius:14px;padding:14px;background:#fffdf4;margin-top:14px;}
+.member-sheet-settings label{font-size:11px;font-weight:700;color:var(--gold-dark);display:block;margin-bottom:6px;}
+.member-sheet-url{width:100%;border:1.5px solid #dfcf95;border-radius:10px;padding:10px 12px;font-size:12px;font-family:inherit;margin-bottom:8px;box-sizing:border-box;outline:none;}
+.member-sheet-url:focus{border-color:var(--gold);}
+.member-sheet-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.member-sheet-note{font-size:10.5px;color:var(--text-muted);margin-top:8px;line-height:1.5;}
+.sheet-status-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px;}
+.sheet-spinner{display:none;width:14px;height:14px;border:2px solid #e0d5b0;border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.member-empty{border:1px dashed var(--border);border-radius:14px;padding:22px;text-align:center;color:var(--text-muted);font-size:13px;background:var(--surface2);}
+
+@media(max-width:1180px){
+  .mode-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:960px){
+  .sidebar{width:240px;flex:0 0 240px;}
+  .member-result-header{display:none;}
+  .member-result-card{grid-template-columns:minmax(0,1fr) auto;}
+  .member-result-mobile,.member-result-email,.member-result-dob{display:none;}
+}
+@media(max-width:680px){
+  html,body{overflow:auto;overflow-x:hidden;height:auto;width:100%;}
+  .header{height:auto;min-height:52px;padding:8px 14px;flex-wrap:wrap;}
+  .header-brand{min-width:0;flex:1 1 180px;}
+  .header-title{font-size:16px;line-height:1.15;}
+  .header-sub{display:none;}
+  .header-right{width:100%;gap:6px;margin-left:0;flex-wrap:wrap;justify-content:space-between;}
+  .language-switch{order:2;width:100%;justify-content:flex-end;}
+  .language-options{gap:2px;}
+  .language-option{min-width:52px;padding:4px 7px;}
+  .gold-price-pill{padding:5px 10px;font-size:11px;}
+  .admin-bar{height:auto;min-height:36px;padding:6px 14px;}
+  .app-body{flex-direction:column;overflow:visible;}
+  .sidebar{
+    position:sticky;top:0;z-index:90;
+    width:100%;flex:none;border-right:none;border-bottom:1px solid rgba(255,255,255,.1);
+    padding:9px 10px 8px;box-shadow:0 10px 26px rgba(17,16,13,.16);
+  }
+  .sidebar .sync-dot,.sidebar-section-label,.sb-rules-grid,.sb-steps,.sidebar-link{display:none;}
+  .sidebar-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0;}
+  .sb-nav-btn{
+    flex-direction:column;align-items:center;justify-content:center;
+    min-height:58px;padding:7px 3px;border-radius:10px;
+    gap:4px;text-align:center;font-size:10px;touch-action:manipulation;
+  }
+  .sb-nav-btn .sb-icon{width:27px;height:27px;border-radius:8px;font-size:14px;}
+  .sb-nav-btn .sb-label{line-height:1.15;}
+  .main-content{overflow:visible;padding:16px;width:100%;max-width:100%;min-width:0;}
+  .screen{min-width:0;}
+  .screen-header{align-items:flex-start;flex-wrap:wrap;}
+  .screen-title{font-size:20px;line-height:1.35;flex:1 1 220px;}
+  .card{width:100%;min-width:0;padding:16px;}
+  .mode-card,.btn-sm,.btn-xs,.tab-btn,.screen-back-btn,.member-result-card{touch-action:manipulation;}
+  .mode-grid{grid-template-columns:1fr;}
+  .home-gold-strip{flex-direction:column;align-items:stretch;gap:12px;}
+  .hgs-divider{width:100%;height:1px;margin:0;}
+  .wizard-bar{padding:14px;align-items:flex-start;}
+  .wz-progress{display:none;}
+  .convert-tabs{gap:8px;}
+  .tab-btn{flex:1 1 112px;min-width:0;}
+  .result-grid{grid-template-columns:1fr;}
+  .convert-result{grid-template-columns:1fr;}
+  .convert-member-context{align-items:flex-start;flex-direction:column;}
+  .cmc-summary{justify-content:flex-start;}
+  .member-layout,.member-profile-card,.member-layout > .card{width:100%;min-width:0;}
+  .member-profile-overlay{padding:12px;align-items:flex-start;overflow:auto;}
+  .member-profile-card{max-height:none;}
+  .member-profile-head{flex-direction:row;align-items:flex-start;}
+  .member-coin-amount{font-size:30px;overflow-wrap:anywhere;}
+  .member-coin-amount.value{font-size:30px;}
+  .tier-tooltip-box{width:calc(100vw - 40px);max-width:360px;}
+  .tier-tooltip-desc{white-space:normal;}
+  .member-info-grid{grid-template-columns:1fr;}
+  .member-info-wide{grid-column:auto;}
+  .member-email-value{white-space:normal;}
+  .member-result-card{grid-template-columns:1fr;align-items:flex-start;}
+  .member-result-coins{align-self:flex-start;}
+  .member-search-row{align-items:stretch;flex-direction:column;}
+  .member-search-input,.field input,.field-mini input{width:100%;min-width:0;}
+  .member-search-row .btn-sm{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">N</div>
+    <div>
+      <div class="header-title">Rolex Gold Coin Calculator</div>
+      <div class="header-sub" data-i18n="header.subtitle">NGG Timepieces — เครื่องมือทีมขายภายใน</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="language-switch" role="group" aria-label="Language selector">
+      <span class="language-switch-label" data-i18n="lang.label">ภาษา</span>
+      <div class="language-options">
+        <button id="languageThai" class="language-option" type="button" data-language-option="th" aria-pressed="true" title="ภาษาไทย">
+          <span class="language-flag" aria-hidden="true">🇹🇭</span>
+          <span>TH</span>
+        </button>
+        <button id="languageEnglish" class="language-option" type="button" data-language-option="en" aria-pressed="false" title="English">
+          <span class="language-flag" aria-hidden="true">🇬🇧</span>
+          <span>EN</span>
+        </button>
+      </div>
+    </div>
+    <div class="gold-price-pill"><span data-i18n="header.goldPrice">ราคาทอง</span> <span class="pv" id="headerGoldPrice">—</span> <span data-i18n="unit.bahtPerBaht">บาท/บาท</span></div>
+  </div>
+</header>
+
+<!-- ADMIN BAR -->
+<div class="admin-bar">
+  <div id="adminStatusPill" class="admin-pill sales">
+    <span class="dot"></span>
+    <span id="adminStatusText">โหมดขาย — ดูและคำนวณได้</span>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button id="adminLoginButton" class="btn-xs" type="button" data-i18n="admin.loginButton">🔐 เข้าสู่ระบบแอดมิน</button>
+    <button id="adminLogoutButton" class="btn-xs danger hidden" type="button" data-i18n="admin.logoutButton">ออกจาก Admin</button>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN PANEL -->
+<div id="adminLoginPanel" class="admin-panel">
+  <div class="admin-panel-inner">
+    <div class="field-mini">
+      <label data-i18n="admin.passwordLabel">รหัสแอดมิน</label>
+      <input id="adminPasswordInput" type="password" placeholder="กรอกรหัสแอดมิน" data-i18n-placeholder="admin.passwordPlaceholder"/>
+    </div>
+    <button id="togglePasswordVisibility" class="btn-sm btn-outline" type="button">Show</button>
+    <button id="submitAdminLogin" class="btn-sm btn-primary" type="button" data-i18n="admin.submitLogin">เข้าสู่ระบบ</button>
+  </div>
+</div>
+
+<!-- APP BODY -->
+<div class="app-body" id="mainBody">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+
+    <!-- Sync status (compact) -->
+    <div id="sbSyncDot" class="sync-dot" style="margin-bottom:12px;">
+      <div class="s-dot"></div>
+      <span id="sbSyncText">กำลังโหลดจาก Gold API...</span>
+    </div>
+    <!-- Hidden fields for JS compat -->
+    <span id="sbGoldPrice" style="display:none;"></span>
+    <span id="sbUpdatedAt" style="display:none;"></span>
+
+    <!-- Navigation -->
+    <div class="sidebar-section-label" data-i18n="sidebar.mainMenu">เมนูหลัก</div>
+    <div class="sidebar-nav">
+      <button class="sb-nav-btn" id="snav-home" onclick="showScreen('home')" type="button">
+        <div class="sb-icon">🏠</div>
+        <span class="sb-label" data-i18n="nav.home">หน้าหลัก</span>
+      </button>
+      <button class="sb-nav-btn" id="snav-calc" onclick="showScreen('calc')" type="button">
+        <div class="sb-icon">🧮</div>
+        <span class="sb-label" data-i18n="nav.calc">คำนวณ Gold Coin</span>
+      </button>
+      <button class="sb-nav-btn" id="snav-convert" onclick="showScreen('convert')" type="button">
+        <div class="sb-icon">🔄</div>
+        <span class="sb-label" data-i18n="nav.convert">แปลง Coin / บาท / กรัม</span>
+      </button>
+      <button class="sb-nav-btn" id="snav-history" onclick="showScreen('history')" type="button">
+        <div class="sb-icon">📋</div>
+        <span class="sb-label" data-i18n="nav.history">ประวัติราคาทอง</span>
+      </button>
+      <button class="sb-nav-btn" id="snav-member" onclick="showScreen('member')" type="button">
+        <div class="sb-icon">👤</div>
+        <span class="sb-label" data-i18n="nav.member">ตรวจสอบ Gold Coins</span>
+      </button>
+    </div>
+
+    <!-- Product rules — compact grid cards -->
+    <div class="sidebar-section-label" data-i18n="sidebar.rules">เงื่อนไขตามประเภทสินค้า</div>
+    <div class="sb-rules-grid">
+      <div class="sb-rule-card jewel">
+        <div class="sb-rule-top"><span class="sb-rule-icon">💎</span><span class="sb-rule-badge jewel">100%</span></div>
+        <div class="sb-rule-name" data-i18n="product.jewellery">จิวเวลรี</div>
+        <div class="sb-rule-detail" data-i18n="rule.jewellery">ได้รับ Gold Coin เต็มจำนวน</div>
+      </div>
+      <div class="sb-rule-card watch">
+        <div class="sb-rule-top"><span class="sb-rule-icon">⌚</span><span class="sb-rule-badge watch">50%</span></div>
+        <div class="sb-rule-name" data-i18n="product.watch">นาฬิกา</div>
+        <div class="sb-rule-detail" data-i18n="rule.watch">ของมูลค่าสินค้า</div>
+      </div>
+      <div class="sb-rule-card labor">
+        <div class="sb-rule-top"><span class="sb-rule-icon">🪙</span><span class="sb-rule-badge labor" data-i18n="rule.laborBadge">ค่าฝีมือ</span></div>
+        <div class="sb-rule-name" data-i18n="product.goldOrnament">ทองรูปพรรณ</div>
+        <div class="sb-rule-detail" data-i18n="rule.labor">เฉพาะค่ากำเหน็จ</div>
+      </div>
+    </div>
+
+    <!-- How to earn — compact 2-step row -->
+    <div class="sidebar-section-label" style="margin-top:16px;" data-i18n="sidebar.howToEarn">วิธีรับ Gold Coin</div>
+    <div class="sb-steps">
+      <div class="sb-step">
+        <div class="sb-step-num">1</div>
+        <div class="sb-step-text"><strong data-i18n="earn.storeTitle">หน้าร้าน/ออนไลน์</strong><span data-i18n="earn.storeDesc">แจ้งเบอร์โทรสมาชิก</span></div>
+      </div>
+      <div class="sb-step-arrow">→</div>
+      <div class="sb-step">
+        <div class="sb-step-num">2</div>
+        <div class="sb-step-text"><strong data-i18n="earn.webTitle">เว็บ/แอป</strong><span data-i18n="earn.webDesc">ล็อกอินก่อนซื้อสินค้า</span></div>
+      </div>
+    </div>
+    <a href="https://nggjewellery.com/blog/ngg-membership-web" target="_blank" rel="noopener" class="sidebar-link" style="margin-top:10px;" data-i18n="sidebar.readMore">อ่านรายละเอียดเพิ่มเติม →</a>
+
+  </aside>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <div class="main-content" id="appMainContent">
+
+    <!-- loading bar -->
+    <div id="loadingBar" class="loading-bar">
+      <div class="spinner"></div>
+      <span data-i18n="loading.goldApi">กำลังดึงราคาทองจาก API...</span>
+    </div>
+
+    <!-- ════ HOME SCREEN ════ -->
+    <div id="screen-home" class="screen active">
+      <div class="home-greeting">
+        <h1 data-i18n="home.greeting">สวัสดี, ยินดีต้อนรับ 👋</h1>
+        <p data-i18n="home.subtitle">เลือกสิ่งที่ต้องการด้านล่าง หรือใช้เมนูซ้ายมือได้เลยค่ะ</p>
+      </div>
+
+      <!-- Gold strip -->
+      <div class="home-gold-strip" id="homeGoldStrip">
+        <div class="hgs-item">
+          <div class="hgs-label" data-i18n="gold.today">ราคาทองวันนี้</div>
+          <div class="hgs-val gold" id="hgsPrice">—</div>
+        </div>
+        <div class="hgs-divider"></div>
+        <div class="hgs-item">
+          <div class="hgs-label" data-i18n="gold.perGram">ราคาต่อกรัม</div>
+          <div class="hgs-val" id="hgsPerGram">—</div>
+        </div>
+        <div class="hgs-divider"></div>
+        <div class="hgs-item">
+          <div class="hgs-label" data-i18n="gold.oneCoinValue">มูลค่า 1 เหรียญ Gold Coin</div>
+          <div class="hgs-val" id="hgsOneCoin">—</div>
+        </div>
+        <div class="hgs-divider"></div>
+        <div class="hgs-item">
+          <div class="hgs-label" data-i18n="gold.lastUpdated">อัปเดตล่าสุด</div>
+          <div class="hgs-val date" id="hgsUpdated">—</div>
+        </div>
+      </div>
+
+      <!-- Mode cards -->
+      <div class="mode-grid">
+
+        <div class="mode-card" onclick="showScreen('calc')">
+          <div class="mc-icon calc">🧮</div>
+          <div>
+            <div class="mc-title" data-i18n="card.calcTitle">คำนวณ Gold Coin</div>
+            <div class="mc-desc" data-i18n="card.calcDesc">กรอกยอด Spending ของลูกค้าแต่ละประเภท ระบบคำนวณ Gold Coin ให้อัตโนมัติ</div>
+          </div>
+          <div class="mc-arrow">
+            <span data-i18n="card.calcCta">เริ่มคำนวณ</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="mode-card" onclick="showScreen('convert')">
+          <div class="mc-icon convert">🔄</div>
+          <div>
+            <div class="mc-title" data-i18n="card.convertTitle">แปลง Coin / บาท / กรัม</div>
+            <div class="mc-desc" data-i18n="card.convertDesc">แปลงจำนวน Gold Coin เป็นมูลค่าเงินบาท หรือน้ำหนักทองได้ทันที</div>
+          </div>
+          <div class="mc-arrow">
+            <span data-i18n="card.convertCta">เริ่มแปลง</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="mode-card" onclick="showScreen('history')">
+          <div class="mc-icon history">📋</div>
+          <div>
+            <div class="mc-title" data-i18n="card.historyTitle">ประวัติราคาทอง</div>
+            <div class="mc-desc" data-i18n="card.historyDesc">ดูประวัติราคาทองที่ Admin บันทึกไว้ ย้อนหลังได้ทุกวัน</div>
+          </div>
+          <div class="mc-arrow">
+            <span data-i18n="card.historyCta">ดูประวัติ</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="mode-card" onclick="showScreen('member')">
+          <div class="mc-icon" style="background:rgba(201,168,76,.13);font-size:22px;">👤</div>
+          <div>
+            <div class="mc-title" data-i18n="card.memberTitle">ตรวจสอบ Gold Coins ลูกค้า</div>
+            <div class="mc-desc" data-i18n="card.memberDesc">ค้นหาสมาชิกด้วยเบอร์โทร ดูยอด Gold Coins สะสมปัจจุบัน และมูลค่าทอง</div>
+          </div>
+          <div class="mc-arrow">
+            <span data-i18n="card.memberCta">ค้นหาสมาชิก</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════ CALC SCREEN ════ -->
+    <div id="screen-calc" class="screen">
+      <div class="screen-header">
+        <button class="screen-back-btn" onclick="showScreen('home')" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="action.backHome">กลับหน้าหลัก</span>
+        </button>
+        <div class="screen-title" data-i18n="nav.calc">คำนวณ Gold Coin</div>
+      </div>
+
+      <!-- Wizard bar -->
+      <div class="wizard-bar">
+        <div class="wz-step" onclick="goToStep(1)">
+          <div class="wz-circle active" id="sc1">1</div>
+          <span class="wz-label active" id="sl1" data-i18n="wizard.goldPrice">ราคาทองวันนี้</span>
+        </div>
+        <div class="wz-line" id="conn1"></div>
+        <div class="wz-step" onclick="goToStep(2)">
+          <div class="wz-circle idle" id="sc2">2</div>
+          <span class="wz-label" id="sl2" data-i18n="wizard.spending">ยอด Spending</span>
+        </div>
+        <div class="wz-line" id="conn2"></div>
+        <div class="wz-step" onclick="goToStep(3)">
+          <div class="wz-circle idle" id="sc3">3</div>
+          <span class="wz-label" id="sl3" data-i18n="wizard.result">ผลลัพธ์</span>
+        </div>
+        <div class="wz-progress" style="flex:1;margin-left:8px;"><div class="wz-progress-fill" id="progressFill" style="width:33%"></div></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step-panel active" id="step1">
+        <div class="card">
+          <div class="card-title" data-i18n="gold.today">ราคาทองวันนี้</div>
+          <div class="card-sub" data-i18n="calc.goldSub">ระบบดึงราคาทองกลางจาก API อัตโนมัติ เพื่อให้ทีมขายทุกคนเห็นราคาเดียวกัน</div>
+          <div class="field-group">
+            <div class="field">
+              <label data-i18n="field.goldBarPrice">ราคาขาย ทองแท่ง AU23K 1 บาท (ทอง 96.5%)</label>
+              <input id="goldBarPrice" type="text" inputmode="decimal" value="71,350" disabled/>
+            </div>
+            <div class="field">
+              <label data-i18n="field.bahtGoldGram">น้ำหนัก 1 บาททอง (กรัม)</label>
+              <div class="inline-lock">
+                <input id="bahtGoldGram" type="text" inputmode="decimal" value="15.2444" disabled/>
+                <button id="toggleGramLock" class="lock-btn admin-only" type="button" style="display:none;">ปลดล็อก</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-gold-section admin-active-block" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--gold-dark);margin-bottom:10px;" data-i18n="admin.goldSectionTitle">⚙️ Admin: อัปเดตราคาทองกลาง</div>
+            <div style="background:#fff;border:1.5px solid #e0c97a;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+              <div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:8px;" data-i18n="admin.howToUse">วิธีใช้งาน</div>
+              <div style="font-size:12px;display:flex;flex-direction:column;gap:6px;">
+                <div data-i18n="admin.apiInstruction">① ระบบจะดึงราคาทองล่าสุดจาก API อัตโนมัติเมื่อเปิดหรือรีโหลดหน้านี้</div>
+                <div data-i18n-html="admin.saveInstruction">② ปุ่มนี้ใช้สำหรับ <strong>บันทึกประวัติราคาในเครื่อง</strong> เท่านั้น</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <input id="goldPriceDate" type="date" style="border:1.5px solid #e0c97a;border-radius:10px;padding:9px 12px;font-family:inherit;font-size:12px;background:#fffef5;"/>
+              <button id="saveGoldPrice" class="btn-sm btn-primary" type="button" data-i18n="action.savePriceHistory">📋 บันทึกประวัติราคา</button>
+            </div>
+          </div>
+
+          <div class="info-row" style="margin-top:14px;">
+            <span class="lbl" data-i18n="gold.pricePerGram">ราคาทองต่อกรัม</span>
+            <span class="val" id="goldPerGram">—</span>
+          </div>
+          <div class="info-row" style="margin-top:8px;">
+            <span class="lbl" data-i18n="gold.oneCoinFormula">มูลค่า 1 เหรียญ Gold Coin (= 0.01 กรัม)</span>
+            <span class="val" id="oneCoinValue">—</span>
+          </div>
+          <div class="type-chips">
+            <div class="type-chip jewel" data-i18n="chip.jewellery">จิวเวลรี: เต็มจำนวน</div>
+            <div class="type-chip watch" data-i18n="chip.watch">นาฬิกา: 50% ของมูลค่า</div>
+            <div class="type-chip labor" data-i18n="chip.labor">ทองรูปพรรณ: ค่ากำเหน็จ</div>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-next" onclick="goToStep(2)" type="button" data-i18n="action.nextSpending">ถัดไป: กรอกยอด Spending →</button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-panel" id="step2">
+        <div class="card">
+          <div class="card-title" data-i18n="spending.title">ยอด Spending ของลูกค้า</div>
+          <div class="card-sub" data-i18n="spending.subtitle">กรอกยอดซื้อแต่ละประเภท — เว้นว่างช่องที่ไม่ได้ซื้อได้</div>
+          <div class="field-group">
+            <div class="spend-field jewel">
+              <label data-i18n="field.jewellerySpending">💎 ยอดซื้อ จิวเวลรี (บาท) — เต็มจำนวน</label>
+              <input id="jewellerySpending" type="text" inputmode="decimal" placeholder="เช่น 50,000" data-i18n-placeholder="placeholder.amount"/>
+            </div>
+            <div class="spend-field watch">
+              <label data-i18n="field.watchSpending">⌚ ยอดซื้อนาฬิกา (บาท) — จะนำ 50% มาคิด Gold Coin</label>
+              <input id="watchSpending" type="text" inputmode="decimal" placeholder="เช่น 250,000" data-i18n-placeholder="placeholder.watchAmount"/>
+            </div>
+            <div class="spend-field labor">
+              <label data-i18n="field.goldLaborSpending">🪙 ค่ากำเหน็จทองรูปพรรณ (บาท) — ไม่รวมราคาทอง</label>
+              <input id="goldLaborSpending" type="text" inputmode="decimal" placeholder="เช่น 5,000" data-i18n-placeholder="placeholder.laborAmount"/>
+            </div>
+            <div class="field">
+              <label data-i18n="field.conversionRate">อัตราแปลง (%)</label>
+              <div class="inline-lock">
+                <input id="conversionRate" type="text" inputmode="decimal" value="0.40" disabled/>
+                <button id="toggleRateLock" class="lock-btn admin-only" type="button" style="display:none;">ปลดล็อก</button>
+              </div>
+            </div>
+          </div>
+          <div class="info-row" style="margin-top:14px;">
+            <span class="lbl" data-i18n="spending.eligibleTotal">ยอดที่นำมาคิด (รวม)</span>
+            <span class="val" id="eligiblePreview">กรอกยอดเพื่อดูตัวอย่าง</span>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="goToStep(1)" type="button" data-i18n="action.back">← ย้อนกลับ</button>
+          <button class="btn-reset" onclick="resetCalculator()" type="button" data-i18n="action.reset">🔄 Reset</button>
+          <button class="btn-next" onclick="goToStep(3)" type="button" data-i18n="action.viewResult">ดูผลลัพธ์ →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-panel" id="step3">
+        <div class="result-hero">
+          <div class="rh-label" data-i18n="result.earnedLabel">Gold Coin ที่ลูกค้าได้รับ</div>
+          <div class="rh-coins" id="earnedCoinsResult">—</div>
+          <div class="rh-unit" data-i18n="unit.coins">Coins</div>
+          <div class="rh-value"><span data-i18n="result.approxValuePrefix">มูลค่าประมาณ</span> <span id="earnedValueResult" style="color:var(--gold-light);font-weight:700;">—</span></div>
+        </div>
+        <div class="result-grid">
+          <div class="result-item jewel"><div class="ri-label" data-i18n="result.jewellery">จิวเวลรี (เต็มจำนวน)</div><div class="ri-val" id="r_jewel">—</div></div>
+          <div class="result-item watch"><div class="ri-label" data-i18n="result.watch">นาฬิกา (50% ของยอดซื้อ)</div><div class="ri-val" id="r_watch">—</div></div>
+          <div class="result-item labor"><div class="ri-label" data-i18n="result.labor">ค่ากำเหน็จทองรูปพรรณ</div><div class="ri-val" id="r_labor">—</div></div>
+          <div class="result-item total"><div class="ri-label" data-i18n="spending.eligibleTotal">ยอดที่นำมาคิด (รวม)</div><div class="ri-val" id="r_eligible">—</div></div>
+          <div class="result-item"><div class="ri-label" data-i18n="gold.pricePerGram">ราคาทองต่อกรัม</div><div class="ri-val" id="r_gram">—</div></div>
+          <div class="result-item"><div class="ri-label" data-i18n="result.conversionRate">อัตราแปลง</div><div class="ri-val" id="r_rate">—</div></div>
+          <div class="result-item"><div class="ri-label" data-i18n="result.spendPerCoin">ยอดใช้จ่ายต่อ 1 เหรียญ</div><div class="ri-val" id="r_perCoin">—</div></div>
+          <div class="result-item"><div class="ri-label" data-i18n="gold.oneCoinValue">มูลค่า 1 เหรียญ Gold Coin</div><div class="ri-val" id="r_oneCoin">—</div></div>
+        </div>
+        <div class="formula-strip" data-i18n-html="result.formula">
+          <strong>สูตร:</strong> Gold Coins = [ ยอดที่นำมาคิด × อัตราแปลง% ÷ ราคาทองต่อกรัม ] × 100<br>
+          <strong>ยอดที่นำมาคิด</strong> = จิวเวลรี + (นาฬิกา × 50%) + ค่ากำเหน็จ
+        </div>
+        <div class="step-nav">
+          <button class="btn-back" onclick="goToStep(2)" type="button" data-i18n="action.editSpending">← แก้ไขยอด</button>
+          <button class="btn-reset" onclick="resetCalculator()" type="button" data-i18n="action.recalculate">🔄 คำนวณใหม่</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CONVERT SCREEN ════ -->
+    <div id="screen-convert" class="screen">
+      <div class="screen-header">
+        <button class="screen-back-btn" onclick="showScreen('home')" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="action.backHome">กลับหน้าหลัก</span>
+        </button>
+        <div class="screen-title" data-i18n="nav.convert">แปลง Coin / บาท / กรัม</div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-i18n="convert.title">แปลง Gold Coin ↔ บาท ↔ กรัม</div>
+        <div class="card-sub" data-i18n="convert.subtitle">เลือกโหมดการกรอก — ระบบจะคำนวณค่าอื่นๆ ให้อัตโนมัติ</div>
+        <div id="convertMemberContext" class="convert-member-context">
+          <div>
+            <div class="cmc-label" data-i18n="convert.memberContextLabel">แปลงยอดลูกค้า</div>
+            <div id="convertMemberName" class="cmc-name">—</div>
+          </div>
+          <div class="cmc-summary">
+            <div id="convertMemberCoins" class="cmc-coins">—</div>
+            <button class="cmc-link" type="button" onclick="showScreen('member')" data-i18n="convert.backToMember">กลับไปข้อมูลลูกค้า</button>
+          </div>
+        </div>
+        <div class="convert-tabs">
+          <button class="tab-btn active" id="modeBtnCoins" onclick="setMode('coins')" type="button" data-i18n="convert.tabCoins">กรอก Gold Coin</button>
+          <button class="tab-btn" id="modeBtnBaht" onclick="setMode('baht')" type="button" data-i18n="convert.tabBaht">กรอกมูลค่าบาท</button>
+          <button class="tab-btn" id="modeBtnGram" onclick="setMode('gram')" type="button" data-i18n="convert.tabGram">กรอกกรัมทอง</button>
+        </div>
+        <div class="field">
+          <label id="convertLabel">จำนวน Gold Coin</label>
+          <input id="convertInput" type="text" inputmode="decimal" value="1"/>
+        </div>
+        <div class="convert-result">
+          <div class="cr-item"><div class="cr-label">Gold Coin</div><div class="cr-val" id="cvCoins">—</div></div>
+          <div class="cr-item"><div class="cr-label" data-i18n="convert.goldWeight">น้ำหนักทอง</div><div class="cr-val" id="cvGram">—</div></div>
+          <div class="cr-item"><div class="cr-label" data-i18n="convert.valueDiscount">มูลค่า / ส่วนลด</div><div class="cr-val" id="cvBaht">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ HISTORY SCREEN ════ -->
+    <div id="screen-history" class="screen">
+      <div class="screen-header">
+        <button class="screen-back-btn" onclick="showScreen('home')" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="action.backHome">กลับหน้าหลัก</span>
+        </button>
+        <div class="screen-title" data-i18n="nav.history">ประวัติราคาทอง</div>
+        <button id="clearGoldHistory" class="btn-xs danger admin-only" style="display:none;margin-left:auto;" type="button" data-i18n="history.clearAll">🗑 ลบประวัติทั้งหมด</button>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;" data-i18n="history.subtitle">ราคาทองที่ Admin บันทึกไว้ — ทีมขายทุกคนเห็นข้อมูลเดียวกัน</div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th data-i18n="history.date">วันที่</th><th data-i18n="history.time">เวลา</th><th data-i18n="history.goldBar">ราคาทองแท่ง</th><th data-i18n="history.perGram">ต่อกรัม</th><th data-i18n="history.oneCoin">1 เหรียญ</th><th data-i18n="history.manage">จัดการ</th></tr></thead>
+            <tbody id="goldHistoryTable">
+              <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:28px;">ยังไม่มีประวัติการบันทึก</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:12px;" data-i18n="history.note">💡 ข้อมูลบันทึกในเครื่องนี้ — ราคากลางดึงจาก Gold API อัตโนมัติ</p>
+      </div>
+    </div>
+
+
+    <!-- ════ MEMBER SCREEN ════ -->
+    <div id="screen-member" class="screen">
+      <div class="screen-header">
+        <button class="screen-back-btn" onclick="showScreen('home')" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="action.backHome">กลับหน้าหลัก</span>
+        </button>
+        <div class="screen-title" data-i18n="nav.member">ตรวจสอบ Gold Coins ลูกค้า</div>
+      </div>
+
+      <div class="card">
+        <div class="member-toolbar">
+          <div>
+            <div class="card-title" data-i18n="member.lookupTitle">ค้นหายอด Gold Coins ของลูกค้า</div>
+            <div class="card-sub" style="margin-bottom:0;" data-i18n="member.lookupSub">ค้นหาด้วยชื่อ เบอร์โทร หรืออีเมล เพื่อให้พนักงานหน้าร้านตอบลูกค้าได้ทันที</div>
+          </div>
+          <div id="memberSourcePill" class="member-source-pill">
+            <span class="dot"></span>
+            <span id="memberSourceText" data-i18n="member.sourceSample">ข้อมูลตัวอย่าง</span>
+          </div>
+        </div>
+
+        <div class="member-search-row">
+          <input id="memberSearch" class="member-search-input" type="search" placeholder="เช่น 0812345678 / สมชาย / email@email.com" data-i18n-placeholder="member.searchPlaceholder" autocomplete="off" oninput="memberFilter()" />
+          <button class="btn-sm btn-primary" onclick="memberFilter()" type="button" data-i18n="member.searchButton">ค้นหา</button>
+        </div>
+
+        <div class="member-sheet-settings">
+          <label data-i18n="member.sheetUrlLabel">Google Sheet URL สำหรับข้อมูลลูกค้า</label>
+          <input id="memberSheetUrlInput" class="member-sheet-url" type="url" data-i18n-placeholder="member.sheetUrlPlaceholder" placeholder="วางลิงก์ Published CSV จาก Google Sheet" />
+          <div class="member-sheet-actions">
+            <button class="btn-sm btn-primary" onclick="memberConnectSheet()" type="button" data-i18n="member.saveSheetButton">บันทึกและโหลดข้อมูล</button>
+            <button class="btn-sm btn-outline" onclick="memberDisconnectSheet()" type="button" data-i18n="member.clearSheetButton">ใช้ข้อมูลตัวอย่าง</button>
+          </div>
+          <div class="sheet-status-row">
+            <div id="sheetSpinner" class="sheet-spinner"></div>
+            <span id="sheetStatusText" style="color:var(--text-muted);"></span>
+          </div>
+          <div class="member-sheet-note" data-i18n="member.sheetNote">หัวตารางที่รองรับ: Member Name, Mobile Number, Email Address, Date of Birth, Customer Tier, Gold Coin Balance</div>
+        </div>
+      </div>
+
+      <div class="member-layout">
+        <div class="card member-directory-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div style="font-size:12px;color:var(--text-muted);" id="memberCountLabel">—</div>
+            <div style="font-size:11px;color:var(--text-muted);" id="memberUpdatedLabel">—</div>
+          </div>
+          <div id="memberResultsList" class="member-results-list"></div>
+          <p class="note" style="margin-top:12px;" data-i18n="member.privacyNote">ข้อมูลลูกค้าจะแสดงจาก Google Sheet ที่ตั้งค่าไว้ หรือข้อมูลตัวอย่างในไฟล์นี้</p>
+        </div>
+      </div>
+
+      <div id="memberProfileOverlay" class="member-profile-overlay" aria-hidden="true" onclick="memberCloseProfile()">
+        <div id="memberProfileCard" class="card member-profile-card" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+          <button class="member-profile-close" type="button" onclick="memberCloseProfile()" aria-label="Close">×</button>
+          <div class="member-empty" id="memberProfileEmpty" data-i18n="member.emptyProfile">ค้นหาและเลือกลูกค้าเพื่อดูยอด Gold Coins สะสม</div>
+          <div id="memberProfileContent" style="display:none;">
+            <div class="member-profile-head">
+              <div style="display:flex;gap:12px;align-items:center;min-width:0;">
+                <div class="member-avatar">👤</div>
+                <div>
+                  <div id="memberProfileName" class="member-name">—</div>
+                  <div id="memberProfileMobile" class="member-sub">—</div>
+                </div>
+              </div>
+              <div id="memberProfileTier" class="member-tier">—</div>
+            </div>
+
+            <div class="member-coin-box">
+              <div class="member-coin-panel">
+                <div class="member-coin-label" data-i18n="member.balanceLabel">Gold Coin Balance</div>
+                <div id="memberProfileCoins" class="member-coin-amount">—</div>
+                <div id="memberProfileCoinsSub" class="member-coin-foot">—</div>
+              </div>
+              <div class="member-coin-panel">
+                <div class="member-coin-label" data-i18n="member.valueLabel">มูลค่า / ส่วนลด</div>
+                <div id="memberProfileCoinValue" class="member-coin-amount value">—</div>
+                <div id="memberProfileCoinWeight" class="member-coin-foot">—</div>
+              </div>
+            </div>
+
+            <div class="member-info-grid">
+              <div class="member-info-item">
+                <div class="member-info-label" data-i18n="member.fieldName">Member Name</div>
+                <div id="memberInfoName" class="member-info-value">—</div>
+              </div>
+              <div class="member-info-item">
+                <div class="member-info-label" data-i18n="member.fieldMobile">Mobile Number</div>
+                <div id="memberInfoMobile" class="member-info-value">—</div>
+              </div>
+              <div class="member-info-item member-info-wide">
+                <div class="member-info-label" data-i18n="member.fieldEmail">Email Address</div>
+                <div id="memberInfoEmail" class="member-info-value member-email-value">—</div>
+              </div>
+              <div class="member-info-item">
+                <div class="member-info-label" data-i18n="member.fieldDob">Date of Birth</div>
+                <div id="memberInfoDob" class="member-info-value">—</div>
+              </div>
+              <div class="member-info-item">
+                <div class="member-info-label">
+                  <span data-i18n="member.fieldTier">Customer Tier</span>
+                  <button class="tier-info-btn" onclick="document.getElementById('tierTooltip').classList.add('open')" title="ดูข้อมูล Tier">i</button>
+                </div>
+                <div id="memberInfoTier" class="member-info-value">—</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier Info Tooltip Modal -->
+    <div id="tierTooltip" class="tier-tooltip-overlay" onclick="if(event.target===this||event.target.classList.contains('tier-tooltip-backdrop'))this.classList.remove('open')">
+      <div class="tier-tooltip-backdrop"></div>
+      <div class="tier-tooltip-box">
+        <button class="tier-tooltip-close" onclick="document.getElementById('tierTooltip').classList.remove('open')">✕</button>
+        <div class="tier-tooltip-title" data-i18n="tier.popupTitle">Customer Tier</div>
+        <div class="tier-tooltip-row">
+          <span class="tier-badge-pill silver">SILVER</span>
+          <span class="tier-tooltip-desc" data-i18n="tier.silver.desc">ลูกค้าที่ซื้อครั้งแรก</span>
+        </div>
+        <div class="tier-tooltip-row">
+          <span class="tier-badge-pill gold">GOLD</span>
+          <span class="tier-tooltip-desc" data-i18n="tier.gold.desc">ลูกค้าที่ซื้อซ้ำ ยังไม่ถึงระดับ VIP</span>
+        </div>
+        <div class="tier-tooltip-row">
+          <span class="tier-badge-pill platinum">PLATINUM</span>
+          <span class="tier-tooltip-desc" data-i18n="tier.platinum.desc">ลูกค้า VIP ที่มียอดใช้จ่ายสูงหรือซื้อบ่อย</span>
+        </div>
+        <div class="tier-tooltip-note" data-i18n-html="tier.dataNote">หมายเหตุ: จัดระดับจากข้อมูลการซื้อสะสมของลูกค้าในช่วงปี 2022–2026</div>
+      </div>
+    </div>
+  </div>
+  <!-- ══ END MAIN CONTENT ══ -->
+
+</div>
+<!-- ══ END APP BODY ══ -->
+
+<div id="testStatus" class="test-status" aria-hidden="true"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // ─── CONFIG ───
+  var ADMIN_PASSWORD = "NGG2026";
+  var STORAGE_KEY = "ngg_gold_v6";
+  var LANGUAGE_KEY = STORAGE_KEY + "_language";
+  var GOLD_API_URL = "https://api.chnwt.dev/thai-gold-api/latest";
+  var isAdmin = sessionStorage.getItem("nggGoldCoinAdmin") === "true";
+  var currentLanguage = localStorage.getItem(LANGUAGE_KEY) || "th";
+  if (currentLanguage !== "th" && currentLanguage !== "en") currentLanguage = "th";
+  var convertMode = "coins";
+  var editingHistoryKey = null;
+  var currentStep = 1;
+  var currentScreen = "home";
+  var cloudData = null;
+  var goldApiSucceeded = null;
+
+  var DEFAULTS = { goldBarPrice: 71350, bahtGoldGram: 15.2444, conversionRate: 0.40 };
+  var TEXT = {
+    th: {
+      "meta.title": "Rolex Gold Coin Calculator",
+      "lang.label": "ภาษา",
+      "lang.thai": "ภาษาไทย",
+      "lang.english": "ภาษาอังกฤษ",
+      "lang.switchToEnglish": "Switch to English",
+      "lang.switchToThai": "เปลี่ยนเป็นภาษาไทย",
+      "header.subtitle": "NGG Timepieces — เครื่องมือทีมขายภายใน",
+      "header.goldPrice": "ราคาทอง",
+      "unit.bahtPerBaht": "บาท/บาท",
+      "unit.bahtShort": "บาท",
+      "unit.gram": "กรัม",
+      "unit.coins": "Coins",
+      "admin.loginButton": "🔐 เข้าสู่ระบบแอดมิน",
+      "admin.logoutButton": "ออกจาก Admin",
+      "admin.passwordLabel": "รหัสแอดมิน",
+      "admin.passwordPlaceholder": "กรอกรหัสแอดมิน",
+      "admin.submitLogin": "เข้าสู่ระบบ",
+      "admin.statusSales": "โหมดขาย — ดูและคำนวณได้",
+      "admin.statusAdmin": "Admin Mode — แก้ราคาทองและ Conversion rate ได้",
+      "admin.goldSectionTitle": "⚙️ Admin: อัปเดตราคาทองกลาง",
+      "admin.howToUse": "วิธีใช้งาน",
+      "admin.apiInstruction": "① ระบบจะดึงราคาทองล่าสุดจาก API อัตโนมัติเมื่อเปิดหรือรีโหลดหน้านี้",
+      "admin.saveInstruction": "② ปุ่มนี้ใช้สำหรับ <strong>บันทึกประวัติราคาในเครื่อง</strong> เท่านั้น",
+      "sidebar.mainMenu": "เมนูหลัก",
+      "sidebar.rules": "เงื่อนไขตามประเภทสินค้า",
+      "sidebar.howToEarn": "วิธีรับ Gold Coin",
+      "sidebar.readMore": "อ่านรายละเอียดเพิ่มเติม →",
+      "nav.home": "หน้าหลัก",
+      "nav.calc": "คำนวณ Gold Coin",
+      "nav.convert": "แปลง Coin / บาท / กรัม",
+      "nav.history": "ประวัติราคาทอง",
+      "nav.member": "ตรวจสอบ Gold Coins ลูกค้า",
+      "product.jewellery": "จิวเวลรี",
+      "product.watch": "นาฬิกา",
+      "product.goldOrnament": "ทองรูปพรรณ",
+      "rule.jewellery": "ได้รับ Gold Coin เต็มจำนวน",
+      "rule.watch": "ของมูลค่าสินค้า",
+      "rule.laborBadge": "ค่าฝีมือ",
+      "rule.labor": "เฉพาะค่ากำเหน็จ",
+      "earn.storeTitle": "หน้าร้าน/ออนไลน์",
+      "earn.storeDesc": "แจ้งเบอร์โทรสมาชิก",
+      "earn.webTitle": "เว็บ/แอป",
+      "earn.webDesc": "ล็อกอินก่อนซื้อสินค้า",
+      "loading.goldApi": "กำลังดึงราคาทองจาก API...",
+      "status.syncLoading": "กำลังโหลดจาก Gold API...",
+      "status.syncSuccess": "ซิงค์กับ Gold API แล้ว",
+      "status.syncFallback": "ใช้ค่าเริ่มต้น (ไม่สามารถเชื่อมต่อ API)",
+      "status.updatedPrefix": "อัปเดต: ",
+      "home.greeting": "สวัสดี, ยินดีต้อนรับ 👋",
+      "home.subtitle": "เลือกสิ่งที่ต้องการด้านล่าง หรือใช้เมนูซ้ายมือได้เลยค่ะ",
+      "gold.today": "ราคาทองวันนี้",
+      "gold.perGram": "ราคาต่อกรัม",
+      "gold.oneCoinValue": "มูลค่า 1 เหรียญ Gold Coin",
+      "gold.lastUpdated": "อัปเดตล่าสุด",
+      "gold.pricePerGram": "ราคาทองต่อกรัม",
+      "gold.oneCoinFormula": "มูลค่า 1 เหรียญ Gold Coin (= 0.01 กรัม)",
+      "card.calcTitle": "คำนวณ Gold Coin",
+      "card.calcDesc": "กรอกยอด Spending ของลูกค้าแต่ละประเภท ระบบคำนวณ Gold Coin ให้อัตโนมัติ",
+      "card.calcCta": "เริ่มคำนวณ",
+      "card.convertTitle": "แปลง Coin / บาท / กรัม",
+      "card.convertDesc": "แปลงจำนวน Gold Coin เป็นมูลค่าเงินบาท หรือน้ำหนักทองได้ทันที",
+      "card.convertCta": "เริ่มแปลง",
+      "card.historyTitle": "ประวัติราคาทอง",
+      "card.historyDesc": "ดูประวัติราคาทองที่ Admin บันทึกไว้ ย้อนหลังได้ทุกวัน",
+      "card.historyCta": "ดูประวัติ",
+      "card.memberTitle": "ตรวจสอบ Gold Coins ลูกค้า",
+      "card.memberDesc": "ค้นหาชื่อ เบอร์โทร หรืออีเมล เพื่อดูยอด Gold Coins สะสมของลูกค้าทันที",
+      "card.memberCta": "ค้นหาลูกค้า",
+      "action.backHome": "กลับหน้าหลัก",
+      "action.savePriceHistory": "📋 บันทึกประวัติราคา",
+      "action.nextSpending": "ถัดไป: กรอกยอด Spending →",
+      "action.back": "← ย้อนกลับ",
+      "action.reset": "🔄 Reset",
+      "action.viewResult": "ดูผลลัพธ์ →",
+      "action.editSpending": "← แก้ไขยอด",
+      "action.recalculate": "🔄 คำนวณใหม่",
+      "action.show": "แสดง",
+      "action.hide": "ซ่อน",
+      "action.unlock": "ปลดล็อก",
+      "action.lock": "ล็อก",
+      "action.save": "บันทึก",
+      "action.cancel": "ยกเลิก",
+      "action.edit": "แก้ไข",
+      "wizard.goldPrice": "ราคาทองวันนี้",
+      "wizard.spending": "ยอด Spending",
+      "wizard.result": "ผลลัพธ์",
+      "calc.goldSub": "ระบบดึงราคาทองกลางจาก API อัตโนมัติ เพื่อให้ทีมขายทุกคนเห็นราคาเดียวกัน",
+      "field.goldBarPrice": "ราคาขาย ทองแท่ง AU23K 1 บาท (ทอง 96.5%)",
+      "field.bahtGoldGram": "น้ำหนัก 1 บาททอง (กรัม)",
+      "field.jewellerySpending": "💎 ยอดซื้อ จิวเวลรี (บาท) — เต็มจำนวน",
+      "field.watchSpending": "⌚ ยอดซื้อนาฬิกา (บาท) — จะนำ 50% มาคิด Gold Coin",
+      "field.goldLaborSpending": "🪙 ค่ากำเหน็จทองรูปพรรณ (บาท) — ไม่รวมราคาทอง",
+      "field.conversionRate": "อัตราแปลง (%)",
+      "placeholder.amount": "เช่น 50,000",
+      "placeholder.watchAmount": "เช่น 250,000",
+      "placeholder.laborAmount": "เช่น 5,000",
+      "chip.jewellery": "จิวเวลรี: เต็มจำนวน",
+      "chip.watch": "นาฬิกา: 50% ของมูลค่า",
+      "chip.labor": "ทองรูปพรรณ: ค่ากำเหน็จ",
+      "spending.title": "ยอด Spending ของลูกค้า",
+      "spending.subtitle": "กรอกยอดซื้อแต่ละประเภท — เว้นว่างช่องที่ไม่ได้ซื้อได้",
+      "spending.eligibleTotal": "ยอดที่นำมาคิด (รวม)",
+      "spending.emptyPreview": "กรอกยอดเพื่อดูตัวอย่าง",
+      "result.earnedLabel": "Gold Coin ที่ลูกค้าได้รับ",
+      "result.approxValuePrefix": "มูลค่าประมาณ",
+      "result.jewellery": "จิวเวลรี (เต็มจำนวน)",
+      "result.watch": "นาฬิกา (50% ของยอดซื้อ)",
+      "result.labor": "ค่ากำเหน็จทองรูปพรรณ",
+      "result.conversionRate": "อัตราแปลง",
+      "result.spendPerCoin": "ยอดใช้จ่ายต่อ 1 เหรียญ",
+      "result.formula": "<strong>สูตร:</strong> Gold Coins = [ ยอดที่นำมาคิด × อัตราแปลง% ÷ ราคาทองต่อกรัม ] × 100<br><strong>ยอดที่นำมาคิด</strong> = จิวเวลรี + (นาฬิกา × 50%) + ค่ากำเหน็จ",
+      "convert.title": "แปลง Gold Coin ↔ บาท ↔ กรัม",
+      "convert.subtitle": "เลือกโหมดการกรอก — ระบบจะคำนวณค่าอื่นๆ ให้อัตโนมัติ",
+      "convert.tabCoins": "กรอก Gold Coin",
+      "convert.tabBaht": "กรอกมูลค่าบาท",
+      "convert.tabGram": "กรอกกรัมทอง",
+      "convert.labelCoins": "จำนวน Gold Coin",
+      "convert.labelBaht": "มูลค่าเงินบาท",
+      "convert.labelGram": "น้ำหนักทอง (กรัม)",
+      "convert.goldWeight": "น้ำหนักทอง",
+      "convert.valueDiscount": "มูลค่า / ส่วนลด",
+      "convert.memberContextLabel": "แปลงยอดลูกค้า",
+      "convert.backToMember": "กลับไปข้อมูลลูกค้า",
+      "history.clearAll": "🗑 ลบประวัติทั้งหมด",
+      "history.subtitle": "ราคาทองที่ Admin บันทึกไว้ — ทีมขายทุกคนเห็นข้อมูลเดียวกัน",
+      "history.date": "วันที่",
+      "history.time": "เวลา",
+      "history.goldBar": "ราคาทองแท่ง",
+      "history.perGram": "ต่อกรัม",
+      "history.oneCoin": "1 เหรียญ",
+      "history.manage": "จัดการ",
+      "history.note": "💡 ข้อมูลบันทึกในเครื่องนี้ — ราคากลางดึงจาก Gold API อัตโนมัติ",
+      "history.empty": "ยังไม่มีประวัติการบันทึก",
+      "history.autoCalc": "คำนวณอัตโนมัติ",
+      "history.noManage": "—",
+      "member.lookupTitle": "ค้นหายอด Gold Coins ของลูกค้า",
+      "member.lookupSub": "ค้นหาด้วยชื่อ เบอร์โทร หรืออีเมล เพื่อให้พนักงานหน้าร้านตอบลูกค้าได้ทันที",
+      "member.sourceSample": "ข้อมูลตัวอย่าง",
+      "member.sourceLive": "Google Sheet",
+      "member.sourceSheet": "Google Sheet",
+      "member.sourceLoading": "กำลังโหลด Google Sheet...",
+      "member.sourceError": "โหลด Google Sheet ไม่สำเร็จ",
+      "member.searchPlaceholder": "เช่น 0812345678 / สมชาย / email@email.com",
+      "member.searchButton": "ค้นหา",
+      "member.reloadButton": "รีโหลดข้อมูล",
+      "member.sheetUrlLabel": "Google Sheet URL สำหรับข้อมูลลูกค้า",
+      "member.sheetUrlPlaceholder": "วางลิงก์ Google Sheet หรือ Published CSV URL",
+      "member.saveSheetButton": "บันทึกและโหลดข้อมูล",
+      "member.clearSheetButton": "ใช้ข้อมูลตัวอย่าง",
+      "member.sheetNote": "หัวตารางที่รองรับ: Member Name, Mobile Number, Email Address, Date of Birth, Customer Tier, Gold Coin Balance",
+      "member.emptyProfile": "ค้นหาและเลือกลูกค้าเพื่อดูยอด Gold Coins สะสม",
+      "member.balanceLabel": "Gold Coin Balance",
+      "member.valueLabel": "มูลค่า / ส่วนลด (โดยประมาณ)",
+      "member.valueSubHint": "คำนวณจากราคาทองวันนี้",
+      "member.weightHint": "น้ำหนักทองประมาณ {gram} กรัม",
+      "member.discountHint": "ส่วนลดได้สูงสุด {pct}% = <span>{disc} บาท</span>",
+      "member.fieldName": "Member Name",
+      "member.fieldMobile": "Mobile Number",
+      "member.fieldEmail": "Email Address",
+      "member.fieldDob": "Date of Birth",
+      "member.fieldTier": "Customer Tier",
+      "tier.popupTitle": "Customer Tier",
+      "tier.silver.desc": "ลูกค้าที่ซื้อครั้งแรก",
+      "tier.gold.desc": "ลูกค้าที่ซื้อซ้ำ ยังไม่ถึงระดับ VIP",
+      "tier.platinum.desc": "ลูกค้า VIP ที่มียอดใช้จ่ายสูงหรือซื้อบ่อย",
+      "tier.dataNote": "หมายเหตุ: จัดระดับจากข้อมูลการซื้อสะสมของลูกค้าในช่วงปี 2022–2026",
+      "member.fieldBalance": "Gold Coin Balance",
+      "member.privacyNote": "ข้อมูลลูกค้าจะแสดงจาก Google Sheet ที่ตั้งค่าไว้ หรือข้อมูลตัวอย่างในไฟล์นี้",
+      "member.count": "พบข้อมูล {count} รายการ",
+      "member.updated": "อัปเดตล่าสุด: {time}",
+      "member.neverUpdated": "ยังไม่ได้โหลดข้อมูล",
+      "member.noResults": "ไม่พบข้อมูลลูกค้า",
+      "member.noResultsHint": "ลองค้นหาด้วยชื่อ เบอร์โทร หรืออีเมลอื่น",
+      "member.valueHint": "มูลค่าประมาณ {value} / น้ำหนัก {gram} กรัม",
+      "member.sheetSaved": "บันทึก Google Sheet URL แล้ว",
+      "member.sheetCleared": "กลับมาใช้ข้อมูลตัวอย่างแล้ว",
+      "member.sheetLoadFail": "โหลด Google Sheet ไม่สำเร็จ โปรดตรวจสอบว่า Sheet ถูกแชร์แบบ Anyone with the link หรือ Published to web แล้ว",
+      "alert.loginSuccess": "เข้าสู่โหมดแอดมินเรียบร้อย ✅",
+      "alert.loginFail": "รหัสไม่ถูกต้อง กรุณาลองใหม่",
+      "alert.logout": "ออกจากโหมดแอดมินแล้ว",
+      "alert.adminOnly": "เฉพาะ Admin เท่านั้น",
+      "alert.saveMissing": "กรุณากรอกวันที่และราคาทองก่อนบันทึก",
+      "alert.saveSuccess": "✅ บันทึกประวัติราคาในเครื่องแล้ว\n\nหมายเหตุ: การบันทึกนี้มีผลเฉพาะประวัติในเครื่องหน้านี้เท่านั้น ราคากลางล่าสุดยังดึงจาก API",
+      "alert.historyInvalid": "กรุณากรอกวันที่และราคาทองให้ถูกต้อง",
+      "confirm.clearHistory": "ต้องการลบประวัติทั้งหมด?",
+      "confirm.deleteHistory": "ต้องการลบรายการนี้?"
+    },
+    en: {
+      "meta.title": "Rolex Gold Coin Calculator",
+      "lang.label": "Language",
+      "lang.thai": "Thai",
+      "lang.english": "English",
+      "lang.switchToEnglish": "Switch to English",
+      "lang.switchToThai": "Switch to Thai",
+      "header.subtitle": "NGG Timepieces — Internal Sales Tool",
+      "header.goldPrice": "Gold price",
+      "unit.bahtPerBaht": "THB/baht",
+      "unit.bahtShort": "THB",
+      "unit.gram": "grams",
+      "unit.coins": "Coins",
+      "admin.loginButton": "🔐 Admin login",
+      "admin.logoutButton": "Exit Admin",
+      "admin.passwordLabel": "Admin password",
+      "admin.passwordPlaceholder": "Enter admin password",
+      "admin.submitLogin": "Log in",
+      "admin.statusSales": "Sales mode — view and calculate",
+      "admin.statusAdmin": "Admin Mode — gold price and conversion rate can be edited",
+      "admin.goldSectionTitle": "⚙️ Admin: Update gold reference price",
+      "admin.howToUse": "How to use",
+      "admin.apiInstruction": "① The latest gold price is loaded from the API when this page opens or reloads",
+      "admin.saveInstruction": "② This button only <strong>saves price history on this device</strong>",
+      "sidebar.mainMenu": "Main menu",
+      "sidebar.rules": "Rules by product type",
+      "sidebar.howToEarn": "How to earn Gold Coin",
+      "sidebar.readMore": "Read more →",
+      "nav.home": "Home",
+      "nav.calc": "Calculate Gold Coin",
+      "nav.convert": "Convert Coin / THB / Gram",
+      "nav.history": "Gold price history",
+      "nav.member": "Customer Gold Coins Lookup",
+      "product.jewellery": "Jewellery",
+      "product.watch": "Watch",
+      "product.goldOrnament": "Gold ornament",
+      "rule.jewellery": "Earn Gold Coin on the full amount",
+      "rule.watch": "of product value",
+      "rule.laborBadge": "Labor",
+      "rule.labor": "Labor charge only",
+      "earn.storeTitle": "Store/online",
+      "earn.storeDesc": "Provide member phone number",
+      "earn.webTitle": "Website/app",
+      "earn.webDesc": "Log in before purchase",
+      "loading.goldApi": "Fetching gold price from API...",
+      "status.syncLoading": "Loading from Gold API...",
+      "status.syncSuccess": "Synced with Gold API",
+      "status.syncFallback": "Using defaults (API unavailable)",
+      "status.updatedPrefix": "Updated: ",
+      "home.greeting": "Hello, welcome 👋",
+      "home.subtitle": "Choose an option below, or use the menu on the left.",
+      "gold.today": "Today’s gold price",
+      "gold.perGram": "Price per gram",
+      "gold.oneCoinValue": "Value of 1 Gold Coin",
+      "gold.lastUpdated": "Last updated",
+      "gold.pricePerGram": "Gold price per gram",
+      "gold.oneCoinFormula": "Value of 1 Gold Coin (= 0.01 gram)",
+      "card.calcTitle": "Calculate Gold Coin",
+      "card.calcDesc": "Enter each customer spending type and the system calculates Gold Coin automatically.",
+      "card.calcCta": "Start calculating",
+      "card.convertTitle": "Convert Coin / THB / Gram",
+      "card.convertDesc": "Instantly convert Gold Coin into THB value or gold weight.",
+      "card.convertCta": "Start converting",
+      "card.historyTitle": "Gold price history",
+      "card.historyDesc": "View gold prices saved by Admin, with daily history.",
+      "card.historyCta": "View history",
+      "card.memberTitle": "Customer Gold Coins Lookup",
+      "card.memberDesc": "Search by name, mobile, or email to instantly view the customer’s Gold Coin balance.",
+      "card.memberCta": "Find customer",
+      "action.backHome": "Back to home",
+      "action.savePriceHistory": "📋 Save price history",
+      "action.nextSpending": "Next: Enter spending →",
+      "action.back": "← Back",
+      "action.reset": "🔄 Reset",
+      "action.viewResult": "View result →",
+      "action.editSpending": "← Edit spending",
+      "action.recalculate": "🔄 Recalculate",
+      "action.show": "Show",
+      "action.hide": "Hide",
+      "action.unlock": "Unlock",
+      "action.lock": "Lock",
+      "action.save": "Save",
+      "action.cancel": "Cancel",
+      "action.edit": "Edit",
+      "wizard.goldPrice": "Today’s gold price",
+      "wizard.spending": "Spending",
+      "wizard.result": "Result",
+      "calc.goldSub": "The system loads the reference gold price from the API so every sales team member sees the same price.",
+      "field.goldBarPrice": "Sell price, AU23K gold bar, 1 baht weight (96.5% gold)",
+      "field.bahtGoldGram": "Weight of 1 baht gold (grams)",
+      "field.jewellerySpending": "💎 Jewellery spending (THB) — full amount",
+      "field.watchSpending": "⌚ Watch spending (THB) — 50% counts toward Gold Coin",
+      "field.goldLaborSpending": "🪙 Gold ornament labor charge (THB) — excludes gold price",
+      "field.conversionRate": "Conversion rate (%)",
+      "placeholder.amount": "e.g. 50,000",
+      "placeholder.watchAmount": "e.g. 250,000",
+      "placeholder.laborAmount": "e.g. 5,000",
+      "chip.jewellery": "Jewellery: full amount",
+      "chip.watch": "Watch: 50% of value",
+      "chip.labor": "Gold ornament: labor charge",
+      "spending.title": "Customer spending",
+      "spending.subtitle": "Enter spending by type. Leave unused fields blank.",
+      "spending.eligibleTotal": "Eligible total",
+      "spending.emptyPreview": "Enter spending to preview",
+      "result.earnedLabel": "Gold Coin earned by customer",
+      "result.approxValuePrefix": "Approx. value",
+      "result.jewellery": "Jewellery (full amount)",
+      "result.watch": "Watch (50% of spend)",
+      "result.labor": "Gold ornament labor charge",
+      "result.conversionRate": "Conversion rate",
+      "result.spendPerCoin": "Spend per 1 coin",
+      "result.formula": "<strong>Formula:</strong> Gold Coins = [ eligible total × conversion rate% ÷ gold price per gram ] × 100<br><strong>Eligible total</strong> = Jewellery + (Watch × 50%) + Labor charge",
+      "convert.title": "Convert Gold Coin ↔ THB ↔ Gram",
+      "convert.subtitle": "Choose an input mode and the system calculates the other values automatically.",
+      "convert.tabCoins": "Enter Gold Coin",
+      "convert.tabBaht": "Enter THB value",
+      "convert.tabGram": "Enter gold grams",
+      "convert.labelCoins": "Gold Coin amount",
+      "convert.labelBaht": "THB value",
+      "convert.labelGram": "Gold weight (grams)",
+      "convert.goldWeight": "Gold weight",
+      "convert.valueDiscount": "Value / discount",
+      "convert.memberContextLabel": "Customer balance conversion",
+      "convert.backToMember": "Back to customer",
+      "history.clearAll": "🗑 Clear all history",
+      "history.subtitle": "Gold prices saved by Admin — every sales team member sees the same data.",
+      "history.date": "Date",
+      "history.time": "Time",
+      "history.goldBar": "Gold bar price",
+      "history.perGram": "Per gram",
+      "history.oneCoin": "1 coin",
+      "history.manage": "Manage",
+      "history.note": "💡 Data is saved on this device — reference price is fetched from Gold API automatically.",
+      "history.empty": "No saved price history yet",
+      "history.autoCalc": "Calculated automatically",
+      "history.noManage": "—",
+      "member.lookupTitle": "Customer Gold Coins Lookup",
+      "member.lookupSub": "Search by name, mobile, or email so store staff can answer customers immediately.",
+      "member.sourceSample": "Sample data",
+      "member.sourceLive": "Google Sheet",
+      "member.sourceSheet": "Google Sheet",
+      "member.sourceLoading": "Loading Google Sheet...",
+      "member.sourceError": "Google Sheet load failed",
+      "member.searchPlaceholder": "e.g. 0812345678 / Somchai / email@email.com",
+      "member.searchButton": "Search",
+      "member.reloadButton": "Reload data",
+      "member.sheetUrlLabel": "Google Sheet URL for customer data",
+      "member.sheetUrlPlaceholder": "Paste Google Sheet link or published CSV URL",
+      "member.saveSheetButton": "Save and load data",
+      "member.clearSheetButton": "Use sample data",
+      "member.sheetNote": "Supported headers: Member Name, Mobile Number, Email Address, Date of Birth, Customer Tier, Gold Coin Balance",
+      "member.emptyProfile": "Search and select a customer to view their Gold Coin balance",
+      "member.balanceLabel": "Gold Coin Balance",
+      "member.valueLabel": "Est. Value / Discount",
+      "member.valueSubHint": "Based on today's gold price",
+      "member.weightHint": "Approx. gold weight {gram} g",
+      "member.discountHint": "Max discount {pct}% = <span>{disc} THB</span>",
+      "member.fieldName": "Member Name",
+      "member.fieldMobile": "Mobile Number",
+      "member.fieldEmail": "Email Address",
+      "member.fieldDob": "Date of Birth",
+      "member.fieldTier": "Customer Tier",
+      "tier.popupTitle": "Customer Tier",
+      "tier.silver.desc": "First-time buyers",
+      "tier.gold.desc": "Repeat buyers, not VIP yet",
+      "tier.platinum.desc": "VIP customers with high spend or frequent purchases",
+      "tier.dataNote": "Note: Tiers are based on cumulative purchase history<br>from 2022–2026",
+      "member.fieldBalance": "Gold Coin Balance",
+      "member.privacyNote": "Customer data is shown from the configured Google Sheet or the sample data in this file.",
+      "member.count": "{count} result(s)",
+      "member.updated": "Last updated: {time}",
+      "member.neverUpdated": "Data not loaded yet",
+      "member.noResults": "No customer found",
+      "member.noResultsHint": "Try another name, mobile number, or email.",
+      "member.valueHint": "Approx. value {value} / weight {gram} grams",
+      "member.sheetSaved": "Google Sheet URL saved",
+      "member.sheetCleared": "Using sample data again",
+      "member.sheetLoadFail": "Could not load Google Sheet. Please check that the sheet is shared with Anyone with the link or published to the web.",
+      "alert.loginSuccess": "Admin mode enabled ✅",
+      "alert.loginFail": "Incorrect password. Please try again.",
+      "alert.logout": "Admin mode disabled",
+      "alert.adminOnly": "Admin only",
+      "alert.saveMissing": "Please enter a date and gold price before saving.",
+      "alert.saveSuccess": "✅ Price history saved on this device\n\nNote: This only affects local history on this page. The latest reference price is still fetched from the API.",
+      "alert.historyInvalid": "Please enter a valid date and gold price.",
+      "confirm.clearHistory": "Clear all history?",
+      "confirm.deleteHistory": "Delete this item?"
+    }
+  };
+
+  // ─── HELPERS ───
+  function el(id) { return document.getElementById(id); }
+  function setText(id, val) { var n = el(id); if (n) n.textContent = val; }
+  function getValue(id) { var n = el(id); return n ? n.value : ""; }
+  function setValue(id, val) { var n = el(id); if (n) n.value = val; }
+  function t(key) {
+    var pack = TEXT[currentLanguage] || TEXT.th;
+    return Object.prototype.hasOwnProperty.call(pack, key) ? pack[key] : (TEXT.th[key] || key);
+  }
+  function locale() { return currentLanguage === "en" ? "en-US" : "th-TH"; }
+  function cleanNum(raw) { return String(raw || "").replace(/,/g, ""); }
+  function getNum(id) { var n = el(id); if (!n) return 0; var v = Number(cleanNum(n.value)); return Number.isFinite(v) ? v : 0; }
+  function fmt(value, decimals) {
+    var d = typeof decimals === "number" ? decimals : 2;
+    return new Intl.NumberFormat(locale(), { minimumFractionDigits: d, maximumFractionDigits: d }).format(Number.isFinite(value) ? value : 0);
+  }
+  function fmtBaht(value) { return fmt(value, 2) + " " + t("unit.bahtShort"); }
+  function fmtTime(d) { return d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }); }
+  function escHtml(v) { return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+  function makeKey(date, time) { return String(date) + "__" + String(time || ""); }
+  function isNumericInput(input) {
+    if (!input) return false;
+    if (input.classList && input.classList.contains("history-edit-price")) return true;
+    return input.getAttribute("inputmode") === "decimal";
+  }
+  function formatInput(input) {
+    if (!isNumericInput(input)) return;
+    var raw = cleanNum(input.value);
+    if (raw === "" || raw === ".") return;
+    var v = Number(raw);
+    if (!Number.isFinite(v)) return;
+    input.value = new Intl.NumberFormat("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 4 }).format(v);
+  }
+  function updatePasswordVisibilityText() {
+    var inp = el("adminPasswordInput"), btn = el("togglePasswordVisibility");
+    if (!inp || !btn) return;
+    btn.textContent = inp.getAttribute("type") === "password" ? t("action.show") : t("action.hide");
+  }
+  function updateLockButton(inputId, buttonId) {
+    var input = el(inputId), btn = el(buttonId);
+    if (!input || !btn) return;
+    btn.textContent = input.disabled ? t("action.unlock") : t("action.lock");
+  }
+  function updateConvertModeLabel() {
+    if (convertMode === "coins") setText("convertLabel", t("convert.labelCoins"));
+    else if (convertMode === "baht") setText("convertLabel", t("convert.labelBaht"));
+    else setText("convertLabel", t("convert.labelGram"));
+  }
+  function clearConvertMemberContext() {
+    var context = el("convertMemberContext");
+    if (context) context.style.display = "none";
+    setText("convertMemberName", "—");
+    setText("convertMemberCoins", "—");
+  }
+  function setConvertMemberContext(row) {
+    var context = el("convertMemberContext");
+    if (!context || !row) return;
+    context.style.display = "flex";
+    setText("convertMemberName", row.name || row.mobile || "—");
+    setText("convertMemberCoins", memberFormatCoins(row.balance) + " " + t("unit.coins"));
+  }
+  function updateSyncText() {
+    if (goldApiSucceeded === null) setText("sbSyncText", t("status.syncLoading"));
+    else setText("sbSyncText", goldApiSucceeded ? t("status.syncSuccess") : t("status.syncFallback"));
+  }
+  function applyLanguage() {
+    document.documentElement.lang = currentLanguage;
+    document.title = t("meta.title");
+    document.querySelectorAll("[data-i18n]").forEach(function(node) {
+      node.textContent = t(node.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function(node) {
+      node.innerHTML = t(node.getAttribute("data-i18n-html"));
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(node) {
+      node.setAttribute("placeholder", t(node.getAttribute("data-i18n-placeholder")));
+    });
+    document.querySelectorAll("[data-language-option]").forEach(function(btn) {
+      var lang = btn.getAttribute("data-language-option");
+      var isActive = lang === currentLanguage;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      btn.setAttribute("title", lang === "th" ? t("lang.thai") : t("lang.english"));
+    });
+    updatePasswordVisibilityText();
+    updateLockButton("conversionRate", "toggleRateLock");
+    updateLockButton("bahtGoldGram", "toggleGramLock");
+    updateConvertModeLabel();
+    updateSyncText();
+    updateAdminUI();
+    if (cloudData) applyCloudDataToFields();
+    calculateAll();
+    renderHistory();
+    if (typeof memberRefreshSourceStatus === "function") memberRefreshSourceStatus();
+    if (typeof memberRender === "function") memberRender();
+  }
+
+  // ─── HISTORY (local) ───
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY + "_history")) || []; } catch(e) { return []; }
+  }
+  function saveHistory(history) {
+    try { localStorage.setItem(STORAGE_KEY + "_history", JSON.stringify(history)); } catch(e) {}
+  }
+
+  // ─── GOLD API FETCH ───
+  function initLoad() {
+    var url = GOLD_API_URL + "?_t=" + Date.now();
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.timeout = 10000;
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          var response = data && data.response ? data.response : {};
+          var price = response && response.price ? response.price : {};
+          var goldBar = price && price.gold_bar ? price.gold_bar : {};
+          var updatedDate = response.update_date || "";
+          var updatedTime = response.update_time || "";
+          cloudData = {
+            goldBarPrice:   parseFloat(String(goldBar.sell || "").replace(/,/g,"") || DEFAULTS.goldBarPrice),
+            bahtGoldGram:   DEFAULTS.bahtGoldGram,
+            conversionRate: DEFAULTS.conversionRate,
+            updatedAt:      [updatedDate, updatedTime].filter(Boolean).join(" ") || null,
+            updatedBy:      "CHNWT Gold API"
+          };
+          if (!cloudData.goldBarPrice   || cloudData.goldBarPrice   <= 0) cloudData.goldBarPrice   = DEFAULTS.goldBarPrice;
+          if (!cloudData.bahtGoldGram   || cloudData.bahtGoldGram   <= 0) cloudData.bahtGoldGram   = DEFAULTS.bahtGoldGram;
+          if (!cloudData.conversionRate || cloudData.conversionRate <= 0) cloudData.conversionRate = DEFAULTS.conversionRate;
+          onLoadDone(true);
+        } catch(e) { fallbackDefaults(); }
+      } else { fallbackDefaults(); }
+    };
+    xhr.onerror = xhr.ontimeout = function() { fallbackDefaults(); };
+    xhr.send();
+  }
+  function fallbackDefaults() {
+    cloudData = { goldBarPrice: DEFAULTS.goldBarPrice, bahtGoldGram: DEFAULTS.bahtGoldGram, conversionRate: DEFAULTS.conversionRate, updatedAt: null, updatedBy: null };
+    onLoadDone(false);
+  }
+  function onLoadDone(success) {
+    goldApiSucceeded = success;
+    el("loadingBar").style.display = "none";
+    // Sidebar sync dot
+    var dot = el("sbSyncDot");
+    if (dot) {
+      if (!success) dot.classList.add("error");
+      updateSyncText();
+    }
+    applyCloudDataToFields();
+    calculateAll();
+    updateAdminUI();
+    renderHistory();
+    var date = new Date();
+    if (el("goldPriceDate")) el("goldPriceDate").value = date.toISOString().split("T")[0];
+  }
+
+  function applyCloudDataToFields() {
+    if (!cloudData) return;
+    var p = cloudData.goldBarPrice;
+    setValue("goldBarPrice", p);
+    formatInput(el("goldBarPrice"));
+    setValue("bahtGoldGram", cloudData.bahtGoldGram);
+    setValue("conversionRate", cloudData.conversionRate);
+    // Sidebar
+    setText("sbGoldPrice", fmt(p, 0) + " " + t("unit.bahtShort"));
+    setText("sbUpdatedAt", cloudData.updatedAt ? t("status.updatedPrefix") + cloudData.updatedAt : "");
+    // Header
+    setText("headerGoldPrice", fmt(p, 0));
+    // Home gold strip
+    var gpg = p / (cloudData.bahtGoldGram || DEFAULTS.bahtGoldGram);
+    var oneCoin = gpg * 0.01;
+    setText("hgsPrice", fmt(p, 0) + " " + t("unit.bahtShort"));
+    setText("hgsPerGram", fmtBaht(gpg));
+    setText("hgsOneCoin", fmtBaht(oneCoin));
+    setText("hgsUpdated", cloudData.updatedAt || "—");
+  }
+
+  // ─── CALCULATE ───
+  function getGoldPerGram() {
+    var price = getNum("goldBarPrice");
+    var gram = getNum("bahtGoldGram") || DEFAULTS.bahtGoldGram;
+    return gram > 0 ? price / gram : 0;
+  }
+  function calculateAll() {
+    var gpg = getGoldPerGram();
+    var oneCoin = gpg * 0.01;
+    setText("goldPerGram", fmtBaht(gpg));
+    setText("oneCoinValue", fmtBaht(oneCoin));
+    calculateEarned();
+    calculateConvert();
+    updateEligiblePreview();
+    setText("headerGoldPrice", fmt(getNum("goldBarPrice"), 0));
+  }
+  function calculateEarned() {
+    var gpg = getGoldPerGram();
+    var jewel = getNum("jewellerySpending");
+    var watch50 = getNum("watchSpending") * 0.5;
+    var labor = getNum("goldLaborSpending");
+    var eligible = jewel + watch50 + labor;
+    var rate = getNum("conversionRate");
+    var coins = gpg > 0 ? ((eligible * (rate / 100)) / gpg) * 100 : 0;
+    var oneCoin = gpg * 0.01;
+    var value = coins * oneCoin;
+    var perCoin = coins > 0 ? eligible / coins : 0;
+    setText("earnedCoinsResult", fmt(coins, 2));
+    setText("earnedValueResult", fmtBaht(value));
+    setText("r_jewel", fmtBaht(jewel));
+    setText("r_watch", fmtBaht(watch50));
+    setText("r_labor", fmtBaht(labor));
+    setText("r_eligible", fmtBaht(eligible));
+    setText("r_gram", fmtBaht(gpg));
+    setText("r_rate", fmt(rate, 2) + "%");
+    setText("r_perCoin", fmtBaht(perCoin));
+    setText("r_oneCoin", fmtBaht(oneCoin));
+  }
+  function updateEligiblePreview() {
+    var eligible = getNum("jewellerySpending") + getNum("watchSpending") * 0.5 + getNum("goldLaborSpending");
+    setText("eligiblePreview", eligible > 0 ? fmtBaht(eligible) : t("spending.emptyPreview"));
+  }
+  function calculateConvert() {
+    var gpg = getGoldPerGram();
+    var oneCoin = gpg * 0.01;
+    var input = getNum("convertInput");
+    var coins = 0, grams = 0, baht = 0;
+    if (convertMode === "coins") { coins = input; grams = coins * 0.01; baht = coins * oneCoin; }
+    else if (convertMode === "baht") { baht = input; coins = oneCoin > 0 ? baht / oneCoin : 0; grams = coins * 0.01; }
+    else { grams = input; coins = grams / 0.01; baht = grams * gpg; }
+    setText("cvCoins", fmt(coins, 2) + " " + t("unit.coins"));
+    setText("cvGram", fmt(grams, 4) + " " + t("unit.gram"));
+    setText("cvBaht", fmtBaht(baht));
+  }
+
+  // ─── SCREEN NAVIGATION ───
+  window.showScreen = function(name, options) {
+    options = options || {};
+    currentScreen = name;
+    ["home","calc","convert","history","member"].forEach(function(s) {
+      var scr = el("screen-" + s);
+      var nav = el("snav-" + s);
+      if (scr) scr.classList.toggle("active", s === name);
+      if (nav) nav.classList.toggle("active", s === name);
+    });
+    var pane = el("appMainContent");
+    if (pane) pane.scrollTo({ top: 0, behavior: "smooth" });
+    if (name === "history") renderHistory();
+    if (name === "convert") {
+      if (!options.keepMemberContext) clearConvertMemberContext();
+      calculateConvert();
+    }
+    if (name === "member") {
+      memberFilter();
+      if (typeof updateMemberAdminUI === "function") updateMemberAdminUI();
+    }
+    if (name === "calc") calculateAll();
+  };
+
+  // ─── STEP WIZARD ───
+  window.goToStep = function(n) {
+    currentStep = n;
+    [1,2,3].forEach(function(i) {
+      var panel = el("step" + i);
+      var circle = el("sc" + i);
+      var label = el("sl" + i);
+      if (panel) panel.classList.toggle("active", i === n);
+      if (circle) { circle.className = "wz-circle " + (i < n ? "done" : i === n ? "active" : "idle"); circle.textContent = i < n ? "✓" : String(i); }
+      if (label) { label.className = "wz-label" + (i < n ? " done" : i === n ? " active" : ""); }
+    });
+    var c1 = el("conn1"), c2 = el("conn2");
+    if (c1) c1.className = "wz-line" + (n > 1 ? " done" : "");
+    if (c2) c2.className = "wz-line" + (n > 2 ? " done" : "");
+    var pct = n === 1 ? 33 : n === 2 ? 66 : 100;
+    if (el("progressFill")) el("progressFill").style.width = pct + "%";
+    if (n === 3) calculateEarned();
+    var pane = el("appMainContent");
+    if (pane) pane.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // ─── CONVERT MODE ───
+  window.setMode = function(mode) {
+    convertMode = mode;
+    ["Coins","Baht","Gram"].forEach(function(m) {
+      var b = el("modeBtn" + m); if (b) b.classList.toggle("active", mode === m.toLowerCase());
+    });
+    updateConvertModeLabel();
+    if (mode === "coins") setValue("convertInput", "1");
+    else if (mode === "baht") setValue("convertInput", "46.8");
+    else setValue("convertInput", "0.01");
+    calculateConvert();
+  };
+
+  // ─── ADMIN ───
+  function updateAdminUI() {
+    var adminOnlyEls = document.querySelectorAll(".admin-only");
+    var adminActiveBlocks = document.querySelectorAll(".admin-active-block");
+    adminOnlyEls.forEach(function(e) { e.style.display = isAdmin ? "flex" : "none"; });
+    adminActiveBlocks.forEach(function(e) { e.style.display = isAdmin ? "block" : "none"; });
+    if (el("goldBarPrice")) el("goldBarPrice").disabled = !isAdmin;
+    var pill = el("adminStatusPill"), text = el("adminStatusText");
+    if (pill) pill.className = "admin-pill " + (isAdmin ? "admin" : "sales");
+    if (text) text.textContent = isAdmin ? t("admin.statusAdmin") : t("admin.statusSales");
+    if (el("adminLoginButton")) el("adminLoginButton").classList.toggle("hidden", isAdmin);
+    if (el("adminLogoutButton")) el("adminLogoutButton").classList.toggle("hidden", !isAdmin);
+    updateLockButton("conversionRate", "toggleRateLock");
+    updateLockButton("bahtGoldGram", "toggleGramLock");
+    if (typeof updateMemberAdminUI === "function") updateMemberAdminUI();
+  }
+  function adminLogin() {
+    var pw = el("adminPasswordInput") ? el("adminPasswordInput").value : "";
+    if (pw === ADMIN_PASSWORD) {
+      isAdmin = true;
+      sessionStorage.setItem("nggGoldCoinAdmin", "true");
+      setValue("adminPasswordInput", "");
+      el("adminLoginPanel").classList.remove("open");
+      updateAdminUI();
+      if (el("goldBarPrice")) el("goldBarPrice").disabled = false;
+      alert(t("alert.loginSuccess"));
+    } else { alert(t("alert.loginFail")); }
+  }
+  function adminLogout() {
+    isAdmin = false;
+    sessionStorage.removeItem("nggGoldCoinAdmin");
+    updateAdminUI();
+    if (el("goldBarPrice")) el("goldBarPrice").disabled = true;
+    alert(t("alert.logout"));
+  }
+
+  // ─── SAVE GOLD PRICE (history) ───
+  function saveGoldPrice() {
+    if (!isAdmin) { alert(t("alert.adminOnly")); return; }
+    var date = el("goldPriceDate") ? el("goldPriceDate").value : "";
+    var price = getNum("goldBarPrice");
+    var gram = getNum("bahtGoldGram") || DEFAULTS.bahtGoldGram;
+    if (!date || price <= 0) { alert(t("alert.saveMissing")); return; }
+    var now = new Date();
+    var time = fmtTime(now);
+    var gpg = price / gram;
+    var oneCoin = gpg * 0.01;
+    var key = makeKey(date, time);
+    var history = getHistory();
+    history.push({ key: key, date: date, time: time, goldBarPrice: price, goldPerGram: gpg, oneCoinValue: oneCoin });
+    saveHistory(history);
+    if (cloudData) { cloudData.updatedAt = date + " " + time; cloudData.updatedBy = "Admin"; }
+    setText("sbUpdatedAt", t("status.updatedPrefix") + date + " " + time);
+    renderHistory();
+    calculateAll();
+    alert(t("alert.saveSuccess"));
+  }
+
+  // ─── HISTORY ───
+  function renderHistory() {
+    var table = el("goldHistoryTable"); if (!table) return;
+    var history = getHistory();
+    if (history.length === 0) {
+      table.innerHTML = "<tr><td colspan='6' style='text-align:center;color:var(--text-muted);padding:28px;'>" + escHtml(t("history.empty")) + "</td></tr>";
+      return;
+    }
+    history.sort(function(a,b){ return String(b.date).localeCompare(String(a.date)) || String(b.time||"").localeCompare(String(a.time||"")); });
+    var html = "";
+    for (var i = 0; i < history.length; i++) {
+      var item = history[i];
+      var rk = item.key || makeKey(item.date, item.time);
+      var isEditing = isAdmin && editingHistoryKey === rk;
+      html += "<tr>";
+      if (isEditing) {
+        html += "<td><input class='history-edit-date' type='date' value='" + escHtml(item.date) + "'></td>";
+        html += "<td><input class='history-edit-time' type='text' value='" + escHtml(item.time||"") + "' style='min-width:80px;'></td>";
+        html += "<td><input class='history-edit-price' type='text' value='" + escHtml(String(Number(item.goldBarPrice||0))) + "'></td>";
+        html += "<td colspan='2' style='color:var(--text-muted);font-size:11px;'>" + escHtml(t("history.autoCalc")) + "</td>";
+        html += "<td><div class='history-actions'><button class='btn-xs' type='button' data-action='save' data-key='" + escHtml(rk) + "' style='background:var(--watch-bg);color:var(--watch-color);border-color:var(--watch-color);'>" + escHtml(t("action.save")) + "</button><button class='btn-xs' type='button' data-action='cancel'>" + escHtml(t("action.cancel")) + "</button></div></td>";
+      } else {
+        html += "<td>" + escHtml(item.date) + "</td>";
+        html += "<td>" + escHtml(item.time||"-") + "</td>";
+        html += "<td style='font-weight:700;'>" + fmtBaht(Number(item.goldBarPrice)) + "</td>";
+        html += "<td>" + fmtBaht(Number(item.goldPerGram)) + "</td>";
+        html += "<td>" + fmtBaht(Number(item.oneCoinValue)) + "</td>";
+        html += "<td><div class='history-actions'>";
+        if (isAdmin) {
+          html += "<button class='btn-xs' type='button' data-action='edit' data-key='" + escHtml(rk) + "'>" + escHtml(t("action.edit")) + "</button>";
+          html += "<button class='btn-xs danger' type='button' data-action='delete' data-key='" + escHtml(rk) + "'>×</button>";
+        } else { html += "<span style='font-size:12px;color:var(--text-muted);'>" + escHtml(t("history.noManage")) + "</span>"; }
+        html += "</div></td>";
+      }
+      html += "</tr>";
+    }
+    table.innerHTML = html;
+  }
+
+  // ─── RESET ───
+  window.resetCalculator = function() {
+    setValue("watchSpending",""); setValue("jewellerySpending",""); setValue("goldLaborSpending","");
+    if (cloudData) {
+      if (cloudData.goldBarPrice) { setValue("goldBarPrice", cloudData.goldBarPrice); formatInput(el("goldBarPrice")); }
+      if (cloudData.bahtGoldGram) setValue("bahtGoldGram", cloudData.bahtGoldGram);
+      if (cloudData.conversionRate) setValue("conversionRate", cloudData.conversionRate);
+    }
+    setMode("coins"); goToStep(1); calculateAll();
+  };
+
+  // ─── LOCK TOGGLES ───
+  function toggleLock(inputId, buttonId) {
+    if (!isAdmin) { alert(t("alert.adminOnly")); return; }
+    var input = el(inputId), btn = el(buttonId);
+    if (!input || !btn) return;
+    input.disabled = !input.disabled;
+    updateLockButton(inputId, buttonId);
+  }
+
+  // ─── EVENT LISTENERS ───
+  document.querySelectorAll("input").forEach(function(inp) {
+    inp.addEventListener("input", function(e) {
+      var t = e.target;
+      if (isNumericInput(t)) { t.value = t.value.replace(/[^0-9.,:-]/g,""); calculateAll(); updateEligiblePreview(); }
+    });
+    inp.addEventListener("blur", function(e) { formatInput(e.target); });
+  });
+  el("adminLoginButton").addEventListener("click", function() { el("adminLoginPanel").classList.toggle("open"); if (el("adminLoginPanel").classList.contains("open")) el("adminPasswordInput").focus(); });
+  el("adminLogoutButton").addEventListener("click", adminLogout);
+  el("submitAdminLogin").addEventListener("click", adminLogin);
+  el("adminPasswordInput").addEventListener("keydown", function(e) { if (e.key==="Enter") adminLogin(); });
+  el("togglePasswordVisibility").addEventListener("click", function() {
+    var inp = el("adminPasswordInput"), btn = el("togglePasswordVisibility");
+    var show = inp.getAttribute("type") === "password";
+    inp.setAttribute("type", show ? "text" : "password");
+    updatePasswordVisibilityText();
+    inp.focus();
+  });
+  document.querySelectorAll("[data-language-option]").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var nextLanguage = btn.getAttribute("data-language-option");
+      if (nextLanguage === currentLanguage) return;
+      currentLanguage = nextLanguage;
+      localStorage.setItem(LANGUAGE_KEY, currentLanguage);
+      applyLanguage();
+    });
+  });
+  el("saveGoldPrice").addEventListener("click", saveGoldPrice);
+  el("clearGoldHistory").addEventListener("click", function() {
+    if (!isAdmin) return;
+    if (!confirm(t("confirm.clearHistory"))) return;
+    saveHistory([]); editingHistoryKey = null; renderHistory();
+  });
+  el("toggleRateLock").addEventListener("click", function() { toggleLock("conversionRate","toggleRateLock"); });
+  el("toggleGramLock").addEventListener("click", function() { toggleLock("bahtGoldGram","toggleGramLock"); });
+
+  el("goldHistoryTable").addEventListener("click", function(e) {
+    var t = e.target; if (!t||!t.getAttribute) return;
+    var action = t.getAttribute("data-action"), key = t.getAttribute("data-key");
+    if (action==="edit") { if (!isAdmin) return; editingHistoryKey=key; renderHistory(); }
+    if (action==="cancel") { editingHistoryKey=null; renderHistory(); }
+    if (action==="delete") {
+      if (!isAdmin) return;
+      if (!confirm(t("confirm.deleteHistory"))) return;
+      saveHistory(getHistory().filter(function(item){ return (item.key||makeKey(item.date,item.time))!==key; }));
+      editingHistoryKey=null; renderHistory();
+    }
+    if (action==="save") {
+      if (!isAdmin) return;
+      var table = el("goldHistoryTable");
+      var nd = table.querySelector(".history-edit-date").value;
+      var nt = table.querySelector(".history-edit-time").value;
+      var np = Number(cleanNum(table.querySelector(".history-edit-price").value));
+      if (!nd||np<=0) { alert(t("alert.historyInvalid")); return; }
+      if (!nt) nt = fmtTime(new Date());
+      var gram = getNum("bahtGoldGram")||DEFAULTS.bahtGoldGram;
+      var ngpg = np/gram, noc = ngpg*0.01, nk = makeKey(nd,nt);
+      var h = getHistory().filter(function(item){ return (item.key||makeKey(item.date,item.time))!==key; });
+      h.push({ key:nk, date:nd, time:nt, goldBarPrice:np, goldPerGram:ngpg, oneCoinValue:noc });
+      saveHistory(h); editingHistoryKey=null; renderHistory();
+    }
+  });
+
+  // ─── MEMBER LOOKUP ───
+  var nggMembers = [
+  { name:"คุณ กิตติชัย สงคราม", mobile:"0856667744", email:"kittichai_boy@yahoo.com", dob:"12 May 1975", tier:"PLATINUM", balance:1002.11 },
+  { name:"คุณ ภัทรวุฒิ อุประชัยวุฒ", mobile:"0910516888", email:"lovehermes2011@hotmail.com", dob:"5 June 1996", tier:"PLATINUM", balance:986.49 },
+  { name:"Thanasak Subhirankul", mobile:"0815535355", email:"Thanasak.hans@gmail.com", dob:"7 November 1972", tier:"PLATINUM", balance:827.31 },
+  { name:"คุณ แน่นอน ต้นก่อหลวง", mobile:"0899448686", email:"aogsocool@hotmail.com", dob:"20 January 1984", tier:"PLATINUM", balance:670.26 },
+  { name:"คุณ มาลินี ฝ้ายขาว", mobile:"0619756248", email:"Kikey2019@gmail.com", dob:"28 March 1989", tier:"SILVER", balance:512.53 },
+  { name:"Somchart Paiboonruangsuk", mobile:"0816376708", email:"chartpaiboon@gmail.com", dob:"11 January 1957", tier:"GOLD", balance:473.83 },
+  { name:"คุณ ธนพร เจรจาศิลป", mobile:"0833585355", email:"nguan1109@gmail.com", dob:"11 September 1987", tier:"GOLD", balance:359.29 },
+  { name:"คุณ กัลยา กาบิน", mobile:"0819547122", email:"realkanlaya@gmail.com", dob:"25 December 1993", tier:"GOLD", balance:310.06 },
+  { name:"คุณ คำหยาด ปุณริบรูณ์", mobile:"083-361-9737", email:"toon_upp@hotmail.co.th", dob:"29 April 1969", tier:"GOLD", balance:275.68 },
+  { name:"คุณ ณัฏฐ์ จิรวาณิชไพศาล", mobile:"0929629928", email:"natthgridjira@hotmail.com", dob:"3 December 1981", tier:"SILVER", balance:227.54 },
+  { name:"Taweechai Boonthongrungtawee", mobile:"0805999953", email:"tityboonthong@gmail.com", dob:"27 January 1998", tier:"PLATINUM", balance:168.44 },
+  { name:"คุณ แคทลียา สวนอนันตภูมิ", mobile:"0918651175", email:"cattaleeya3456@gmail.com", dob:"29 December 1977", tier:"GOLD", balance:141.19 },
+  { name:"คุณ นริศรา แก้วแสนเมือง", mobile:"0612424599", email:"tonnam_energy@hotmail.com", dob:"19 August 1978", tier:"GOLD", balance:139.16 },
+  { name:"คุณ ศิริเปรมปรีดิ์ ธนุการ", mobile:"0804695366", email:"Aor_siriprempree@hotmail.com", dob:"13 December 1986", tier:"SILVER", balance:133.13 },
+  { name:"Jell Subhirungul", mobile:"0933624955", email:"Jellsub@gmail.com", dob:"19 December 1994", tier:"GOLD", balance:122.01 },
+  { name:"Anuwat Wichiennarat", mobile:"0817893939", email:"Wutt@4nologue.com", dob:"5 July 1981", tier:"PLATINUM", balance:114.16 },
+  { name:"คุณ พงษ์ศวัฒน์ ทัศสมบัติ", mobile:"0878286336", email:"phong_tass@hotmail.com", dob:"10 September 1988", tier:"PLATINUM", balance:79.53 },
+  { name:"คุณ ครรภ์ชิต อ่อนบุญมา", mobile:"0981340997", email:"annathaigirl@msn.com", dob:"20 September 1971", tier:"GOLD", balance:76.25 },
+  { name:"คุณ โชคชัย วงศ์อมรธรรม", mobile:"0992593645", email:"Boyunlock@gmail.com", dob:"7 May 1976", tier:"SILVER", balance:71.21 },
+  { name:"คุณ สมโภช อินทรักษ์", mobile:"0855946559", email:"pian_ong2@hotmail.com", dob:"11 January 1983", tier:"GOLD", balance:46.62 },
+  { name:"คุณ พิสมัย กลิ่นหอมอ่อน", mobile:"0804535655", email:"pimmada9595@gmail.com", dob:"23 March 1988", tier:"SILVER", balance:41.01 },
+  { name:"คุณ ทรงวุฒิ พรมโท", mobile:"0868587532", email:"Tha_up62107@hotmail.com", dob:"5 January 1991", tier:"SILVER", balance:40.2 },
+  { name:"คุณ จารุณี นาประเสริฐกูล", mobile:"0910191888", email:"jarunee.emma3344@gmail.com", dob:"18 May 1976", tier:"SILVER", balance:39.8 },
+  { name:"คุณ ดรุณศักดิ์ ตติยะลาภะ", mobile:"0863043071", email:"nanpha76@hotmail.com", dob:"16 April 1976", tier:"SILVER", balance:33.93 },
+  { name:"คุณ อมรรัตน์ คูซเซ่นซ์", mobile:"0963523745", email:"amonratjansom1996@gmail.com", dob:"14 October 1996", tier:"GOLD", balance:27.77 },
+  { name:"คุณ ธนสิทธิ์ กาญจนากาศ", mobile:"0832423577", email:"thanasit.karn@gmail.com", dob:"20 June 1995", tier:"GOLD", balance:19.55 },
+  { name:"คุณ มิ่งขวัญ จักรพรหมทอง", mobile:"0876989889", email:"mingjak@gmail.com", dob:"18 October 1979", tier:"GOLD", balance:13.02 },
+  { name:"Pongsatorn Siengjun", mobile:"0861438691", email:"return_master2013@hotmail.com", dob:"21 December 1982", tier:"GOLD", balance:2.55 },
+  { name:"คุณ พลอยนภัส ศรีชุณหวณิช", mobile:"0956671115", email:"ppploynapattt@gmail.com", dob:"11 August 2002", tier:"GOLD", balance:0.0 },
+  { name:"คุณ ศรัณย์ธร ตั้งใจเชิดชูธรรม", mobile:"0864979519", email:"sarunthorn.t@gmail.com", dob:"4 July 1984", tier:"SILVER", balance:0.0 },
+  { name:"คุณ ปิยนันท์ โฆษิดาพันธุ์", mobile:"0814505770", email:"valhalla.beau@gmail.com", dob:"25 March 1986", tier:"PLATINUM", balance:0.0 }
+  ];
+  var memberRows = [];
+  var memberFilteredRows = [];
+  var selectedMemberKey = null;
+  var memberLastUpdated = null;
+  function memberNormalizeHeader(value) {
+    return String(value || "").toLowerCase().replace(/[\s_\-()/.]/g, "");
+  }
+  function memberNormalizePhone(value) {
+    return String(value || "").replace(/\D/g, "");
+  }
+  function memberParseNumber(value) {
+    var cleaned = String(value == null ? "" : value).replace(/,/g, "").trim();
+    var n = Number(cleaned);
+    return Number.isFinite(n) ? n : 0;
+  }
+  function memberKey(row, index) {
+    return "member_" + (memberNormalizePhone(row.mobile) || row.email || row.name || index).toLowerCase().replace(/[^a-z0-9ก-๙]/gi, "");
+  }
+  function memberPrepareRows(rows) {
+    return rows.map(function(row, index) {
+      return {
+        key: row.key || memberKey(row, index),
+        name: String(row.name || "").trim(),
+        mobile: String(row.mobile || "").trim(),
+        email: String(row.email || "").trim(),
+        dob: String(row.dob || "").trim(),
+        tier: String(row.tier || "").trim(),
+        balance: memberParseNumber(row.balance)
+      };
+    }).filter(function(row) {
+      return row.name || row.mobile || row.email;
+    });
+  }
+  function memberReadField(raw, names) {
+    var normalized = {};
+    Object.keys(raw || {}).forEach(function(key) {
+      normalized[memberNormalizeHeader(key)] = raw[key];
+    });
+    for (var i = 0; i < names.length; i++) {
+      var value = normalized[memberNormalizeHeader(names[i])];
+      if (value != null && String(value).trim() !== "") return value;
+    }
+    return "";
+  }
+  function memberFormatCoins(value) {
+    return fmt(memberParseNumber(value), 2);
+  }
+  function memberCoinGram(coins) {
+    return memberParseNumber(coins) * 0.01;
+  }
+  function memberCoinValue(coins) {
+    return memberCoinGram(coins) * getGoldPerGram();
+  }
+  function memberValueHint(row) {
+    return t("member.valueHint")
+      .replace("{value}", fmtBaht(memberCoinValue(row.balance)))
+      .replace("{gram}", fmt(memberCoinGram(row.balance), 4));
+  }
+  function memberRenderProfile(row) {
+    var empty = el("memberProfileEmpty");
+    var content = el("memberProfileContent");
+    if (!row) {
+      if (empty) empty.style.display = "block";
+      if (content) content.style.display = "none";
+      return;
+    }
+    if (empty) empty.style.display = "none";
+    if (content) content.style.display = "block";
+    setText("memberProfileName", row.name || "—");
+    setText("memberProfileMobile", row.mobile || "—");
+    setText("memberProfileTier", row.tier || "—");
+    setText("memberProfileCoins", memberFormatCoins(row.balance));
+    var gram = memberCoinGram(row.balance);
+    var val  = memberCoinValue(row.balance);
+    setText("memberProfileCoinsSub", "≈ " + fmt(gram, 4) + " " + t("unit.gram"));
+    setText("memberProfileCoinValue", fmtBaht(val));
+    setText("memberProfileCoinWeight", t("member.valueSubHint"));
+    setText("memberInfoName", row.name || "—");
+    setText("memberInfoMobile", row.mobile || "—");
+    setText("memberInfoEmail", row.email || "—");
+    setText("memberInfoDob", row.dob || "—");
+    setText("memberInfoTier", row.tier || "—");
+    setText("memberInfoBalance", memberFormatCoins(row.balance) + " " + t("unit.coins"));
+  }
+  window.memberCardKeydown = function(event, key) {
+    if (!event || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    memberSelect(key);
+  };
+  function memberOpenProfile() {
+    var overlay = el("memberProfileOverlay");
+    if (!overlay) return;
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+  window.memberCloseProfile = function() {
+    var overlay = el("memberProfileOverlay");
+    if (!overlay) return;
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
+  };
+  function memberRender() {
+    var rows = memberFilteredRows.length || (el("memberSearch") && el("memberSearch").value.trim()) ? memberFilteredRows : memberRows;
+    var selected = memberRows.find(function(row) { return row.key === selectedMemberKey; });
+    memberRenderProfile(selected);
+    setText("memberCountLabel", t("member.count").replace("{count}", rows.length));
+    setText("memberUpdatedLabel", memberLastUpdated ? t("member.updated").replace("{time}", memberLastUpdated) : t("member.neverUpdated"));
+
+    var list = el("memberResultsList");
+    var tbody = el("memberTableBody");
+    if (!rows.length) {
+      if (list) list.innerHTML = "<div class='member-empty'><strong>" + escHtml(t("member.noResults")) + "</strong><br>" + escHtml(t("member.noResultsHint")) + "</div>";
+      if (tbody) tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;color:var(--text-muted);padding:32px;'>" + escHtml(t("member.noResults")) + "</td></tr>";
+      return;
+    }
+    if (list) {
+      var header = "<div class='member-result-header' aria-hidden='true'>"
+        + "<span>" + escHtml(t("member.fieldName")) + "</span>"
+        + "<span>" + escHtml(t("member.fieldMobile")) + "</span>"
+        + "<span>" + escHtml(t("member.fieldEmail")) + "</span>"
+        + "<span>" + escHtml(t("member.fieldDob")) + "</span>"
+        + "<span>" + escHtml(t("member.fieldBalance")) + "</span>"
+        + "</div>";
+      list.innerHTML = header + rows.map(function(row) {
+        var active = row.key === selectedMemberKey ? " active" : "";
+        return "<button class='member-result-card" + active + "' type='button' data-member-key=\"" + escHtml(row.key) + "\">"
+          + "<span><span class='member-result-name'>" + escHtml(row.name || "—") + "</span><span class='member-result-meta'>" + escHtml([row.mobile, row.email].filter(Boolean).join(" • ") || "—") + "</span></span>"
+          + "<span class='member-result-mobile'>" + escHtml(row.mobile || "—") + "</span>"
+          + "<span class='member-result-email'>" + escHtml(row.email || "—") + "</span>"
+          + "<span class='member-result-dob'>" + escHtml(row.dob || "—") + "</span>"
+          + "<span class='member-result-coins'>" + escHtml(memberFormatCoins(row.balance)) + " " + escHtml(t("unit.coins")) + "</span>"
+          + "</button>";
+      }).join("");
+    }
+    if (tbody) {
+      tbody.innerHTML = rows.map(function(row) {
+        return "<tr onclick=\"memberSelect('" + escHtml(row.key) + "')\" style='cursor:pointer;'>"
+          + "<td style='font-weight:700;'>" + escHtml(row.name || "—") + "</td>"
+          + "<td style='font-family:Inter, sans-serif;font-size:12px;'>" + escHtml(row.mobile || "—") + "</td>"
+          + "<td>" + escHtml(row.email || "—") + "</td>"
+          + "<td>" + escHtml(row.dob || "—") + "</td>"
+          + "<td><span class='member-tier'>" + escHtml(row.tier || "—") + "</span></td>"
+          + "<td style='text-align:right;'><span class='member-table-coins'>" + escHtml(memberFormatCoins(row.balance)) + "</span></td>"
+          + "</tr>";
+      }).join("");
+    }
+  }
+  window.memberSelect = function(key) {
+    selectedMemberKey = key;
+    memberRender();
+    memberOpenProfile();
+  };
+  function memberBindResultClicks() {
+    var list = el("memberResultsList");
+    if (!list) return;
+    list.addEventListener("click", function(event) {
+      var target = event.target && event.target.closest ? event.target.closest("[data-member-key]") : null;
+      if (!target || !list.contains(target)) return;
+      memberSelect(target.getAttribute("data-member-key"));
+    });
+    list.addEventListener("keydown", function(event) {
+      if (!event || (event.key !== "Enter" && event.key !== " ")) return;
+      var target = event.target && event.target.closest ? event.target.closest("[data-member-key]") : null;
+      if (!target || !list.contains(target)) return;
+      event.preventDefault();
+      memberSelect(target.getAttribute("data-member-key"));
+    });
+  }
+  window.memberFilter = function() {
+    var input = el("memberSearch");
+    var q = (input ? input.value : "").trim().toLowerCase();
+    var qPhone = memberNormalizePhone(q);
+    memberFilteredRows = q ? memberRows.filter(function(row) {
+      return String(row.name || "").toLowerCase().includes(q)
+        || String(row.email || "").toLowerCase().includes(q)
+        || String(row.tier || "").toLowerCase().includes(q)
+        || String(row.mobile || "").toLowerCase().includes(q)
+        || (qPhone && memberNormalizePhone(row.mobile).includes(qPhone));
+    }) : memberRows.slice();
+    if (!memberFilteredRows.some(function(row) { return row.key === selectedMemberKey; })) {
+      selectedMemberKey = null;
+      memberCloseProfile();
+    }
+    memberRender();
+  };
+  var SHEET_KEY = "ngg_member_sheet_url";
+  var SHEET_DEFAULT = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEPj_nqqYoO80FJl1QB8zOObZDwBVkHMQde-In8XDHYvyrdMjxcdEf3M6pFMGT9xHLW5zDnoXoDC9u/pub?gid=0&single=true&output=csv";
+
+  function memberParseCSV(text) {
+    var lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+    var headers = lines[0].split(",").map(function(h){ return h.replace(/^"|"$/g,"").trim(); });
+    return lines.slice(1).map(function(line) {
+      // handle quoted commas
+      var cols = [], cur = "", inQ = false;
+      for (var i = 0; i < line.length; i++) {
+        var c = line[i];
+        if (c === '"') { inQ = !inQ; }
+        else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ""; }
+        else { cur += c; }
+      }
+      cols.push(cur.trim());
+      var obj = {};
+      headers.forEach(function(h, i){ obj[h] = (cols[i] || "").replace(/^"|"$/g,"").trim(); });
+      return obj;
+    });
+  }
+
+  function memberNormalizeCSVRow(obj) {
+    return {
+      name:    memberReadField(obj, ["Member Name","name","ชื่อ"]),
+      mobile:  memberReadField(obj, ["Mobile Number","mobile","เบอร์โทร","phone"]),
+      email:   memberReadField(obj, ["Email Address","email","อีเมล"]),
+      dob:     memberReadField(obj, ["Date of Birth","dob","วันเกิด"]),
+      tier:    (memberReadField(obj, ["Customer Tier","tier","ระดับ"]) || "SILVER").toUpperCase(),
+      balance: memberParseNumber(memberReadField(obj, ["Gold Coin Balance","balance","coins","ยอดเหรียญ"]))
+    };
+  }
+
+  function memberSheetSetStatus(msg, loading, ok) {
+    var s = el("sheetSpinner"), t = el("sheetStatusText");
+    if (s) s.style.display = loading ? "block" : "none";
+    if (t) { t.textContent = msg; t.style.color = ok === false ? "#b53a2c" : ok === true ? "#2e6e45" : "var(--text-muted)"; }
+  }
+
+  function memberConnectSheet() {
+    var input = el("memberSheetUrlInput");
+    if (!input) return;
+    var raw = input.value.trim();
+    if (!raw) { memberSheetSetStatus(t("member.sheetLoadFail"), false, false); return; }
+
+    // convert regular sheet URL → published CSV if needed
+    var csvUrl = raw;
+    var m = raw.match(/\/spreadsheets\/d\/([^/]+)/);
+    if (m && raw.indexOf("pub?") === -1) {
+      var gid = (raw.match(/gid=(\d+)/) || [])[1] || "0";
+      csvUrl = "https://docs.google.com/spreadsheets/d/" + m[1] + "/export?format=csv&gid=" + gid;
+    }
+
+    memberSheetSetStatus(t("status.syncLoading"), true, null);
+    fetch(csvUrl)
+      .then(function(r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function(text) {
+        var parsed = memberParseCSV(text).map(memberNormalizeCSVRow).filter(function(r){ return r.name; });
+        if (parsed.length === 0) throw new Error("empty");
+        localStorage.setItem(SHEET_KEY, csvUrl);
+        memberRows = memberPrepareRows(parsed);
+        memberFilteredRows = memberRows.slice();
+        memberLastUpdated = fmtTime(new Date());
+        memberSetSourceStatus(true);
+        memberSheetSetStatus("✓ โหลดข้อมูล " + parsed.length + " รายการแล้ว", false, true);
+        memberFilter();
+        memberBindResultClicks();
+      })
+      .catch(function(err) {
+        memberSheetSetStatus(t("member.sheetLoadFail"), false, false);
+      });
+  }
+
+  function memberDisconnectSheet() {
+    localStorage.removeItem(SHEET_KEY);
+    var input = el("memberSheetUrlInput");
+    if (input) input.value = "";
+    memberRows = memberPrepareRows(nggMembers);
+    memberFilteredRows = memberRows.slice();
+    memberLastUpdated = fmtTime(new Date());
+    memberSetSourceStatus(false);
+    memberSheetSetStatus("", false, null);
+    memberFilter();
+    memberBindResultClicks();
+  }
+
+  function memberSetSourceStatus(isLive) {
+    var pill = el("memberSourcePill"), txt = el("memberSourceText");
+    if (!pill || !txt) return;
+    if (isLive) {
+      pill.className = "member-source-pill live";
+      txt.textContent = t("member.sourceLive") || "Google Sheet";
+    } else {
+      pill.className = "member-source-pill";
+      txt.setAttribute("data-i18n", "member.sourceSample");
+      txt.textContent = t("member.sourceSample") || "ข้อมูลตัวอย่าง";
+    }
+  }
+
+  function memberInit() {
+    var saved = localStorage.getItem(SHEET_KEY) || SHEET_DEFAULT;
+    var input = el("memberSheetUrlInput");
+    if (input) input.value = saved;
+    memberSheetSetStatus(t("status.syncLoading"), true, null);
+    fetch(saved)
+      .then(function(r){ if(!r.ok) throw new Error(); return r.text(); })
+      .then(function(text){
+        var parsed = memberParseCSV(text).map(memberNormalizeCSVRow).filter(function(r){ return r.name; });
+        if (parsed.length === 0) throw new Error();
+        localStorage.setItem(SHEET_KEY, saved);
+        memberRows = memberPrepareRows(parsed);
+        memberFilteredRows = memberRows.slice();
+        memberLastUpdated = fmtTime(new Date());
+        memberSetSourceStatus(true);
+        memberSheetSetStatus("✓ โหลดข้อมูล " + parsed.length + " รายการแล้ว", false, true);
+        memberFilter();
+        memberBindResultClicks();
+      })
+      .catch(function(){
+        memberRows = memberPrepareRows(nggMembers);
+        memberFilteredRows = memberRows.slice();
+        memberLastUpdated = fmtTime(new Date());
+        memberSetSourceStatus(false);
+        memberSheetSetStatus(t("member.sheetLoadFail"), false, false);
+        memberFilter();
+        memberBindResultClicks();
+      });
+  }
+
+  // ─── START ───
+  memberInit();
+  applyLanguage();
+  showScreen("home");
+  initLoad();
+
+});
+</script>
+</body>
+</html>
