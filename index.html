@@ -1358,19 +1358,6 @@ input[type="date"]{font-family:inherit;}
           <button class="btn-sm btn-primary" onclick="memberFilter()" type="button" data-i18n="member.searchButton">ค้นหา</button>
         </div>
 
-        <div class="member-sheet-settings">
-          <label data-i18n="member.sheetUrlLabel">Google Sheet URL สำหรับข้อมูลลูกค้า</label>
-          <input id="memberSheetUrlInput" class="member-sheet-url" type="url" data-i18n-placeholder="member.sheetUrlPlaceholder" placeholder="วางลิงก์ Published CSV จาก Google Sheet" />
-          <div class="member-sheet-actions">
-            <button class="btn-sm btn-primary" onclick="memberConnectSheet()" type="button" data-i18n="member.saveSheetButton">บันทึกและโหลดข้อมูล</button>
-            <button class="btn-sm btn-outline" onclick="memberDisconnectSheet()" type="button" data-i18n="member.clearSheetButton">ใช้ข้อมูลตัวอย่าง</button>
-          </div>
-          <div class="sheet-status-row">
-            <div id="sheetSpinner" class="sheet-spinner"></div>
-            <span id="sheetStatusText" style="color:var(--text-muted);"></span>
-          </div>
-          <div class="member-sheet-note" data-i18n="member.sheetNote">หัวตารางที่รองรับ: Member Name, Mobile Number, Email Address, Date of Birth, Customer Tier, Gold Coin Balance</div>
-        </div>
       </div>
 
       <div class="member-layout">
